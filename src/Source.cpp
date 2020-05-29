@@ -1,0 +1,17 @@
+#include <iostream>
+
+#include "Constants.hpp"
+#include "Game.hpp"
+
+int main(int argc, char* args[]) {
+    Game* game = new Game();
+    if (game->init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+        while (game->play()) {
+            game->processInput();
+            game->update();
+            game->render();
+        }
+        game->destroy();
+    }
+    return 0;
+}
