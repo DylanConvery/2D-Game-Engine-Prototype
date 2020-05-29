@@ -56,14 +56,25 @@ void Game::processInput() {
     }
 }
 
-void Game::update() {
+float projectile_position_x = 0.0f;
+float projectile_position_y = 0.0f;
+float projective_velocity_x = 0.5f;
+float projectile_velocity_y = 0.5f;
 
+void Game::update() {
+    projectile_position_x += projective_velocity_x;
+    projectile_position_y += projectile_velocity_y;
 }
 
 void Game::render() {
 	//clear screen
     SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(_renderer);
+
+	//create rect to represent projectile, set renderer color and draw it
+    SDL_Rect projectile{(int)projectile_position_x, (int)projectile_position_y, 10, 10};
+    SDL_SetRenderDrawColor(_renderer, 0x10, 0x10, 0x10, 0xFF);
+	SDL_RenderFillRect(_renderer, &projectile);
 
 	//update screen
     SDL_RenderPresent(_renderer);
