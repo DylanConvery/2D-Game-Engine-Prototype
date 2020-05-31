@@ -10,15 +10,18 @@ class Game {
     Game();
     ~Game();
     bool init(int width, int height);
+
     void processInput();
     void update();
     void render();
-	void destroy();
-    bool play() const;
+	
+    void destroy();
+
+    bool loop() const;
 
    private:
     SDL_Window* _window;
     SDL_Renderer* _renderer;
-    bool _play;
+    bool _loop;
 };
 #endif  // !GAME_H

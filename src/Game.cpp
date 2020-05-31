@@ -1,10 +1,10 @@
-#include "Game.hpp"
+#include "Game.h"
 
 #include <iostream>
 
-#include "Constants.hpp"
+#include "Constants.h"
 
-Game::Game() : _play(false), _window(nullptr), _renderer(nullptr) {}
+Game::Game() : _loop(false), _window(nullptr), _renderer(nullptr) {}
 
 Game::~Game() {}
 
@@ -27,7 +27,7 @@ bool Game::init(int width, int height) {
     }
 
     // create vsynced renderer for window
-    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     if (!_renderer) {
         std::cerr << "[ERROR] Renderer could not be created! SDL_Error: " << SDL_GetError() << "\n";
         return false;
@@ -37,18 +37,19 @@ bool Game::init(int width, int height) {
     }
 
     //game is now running
-    _play = true;
+    _loop = true;
+    return _loop;
 }
 void Game::processInput() {
     SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type) {
         case SDL_QUIT:
-            _play = false;
+            _loop = false;
             break;
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_ESCAPE) {
-                _play = false;
+                _loop = false;
                 break;
             }
         default:
@@ -67,20 +68,20 @@ void Game::update() {
 }
 
 void Game::render() {
-	//clear screen
+    //clear screen
     SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(_renderer);
 
-	//create rect to represent projectile, set renderer color and draw it
+    //create rect to represent projectile, set renderer color and draw it
     SDL_Rect projectile{(int)projectile_position_x, (int)projectile_position_y, 10, 10};
     SDL_SetRenderDrawColor(_renderer, 0x10, 0x10, 0x10, 0xFF);
-	SDL_RenderFillRect(_renderer, &projectile);
+    SDL_RenderFillRect(_renderer, &projectile);
 
-	//update screen
+    //update screen
     SDL_RenderPresent(_renderer);
 }
 
-bool Game::play() const { return _play; }
+bool Game::loop() const { return _loop; }
 
 void Game::destroy() {
     // destroy renderer
