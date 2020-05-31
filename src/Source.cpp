@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Constants.h"
-#include "Game.h"
+#include "Constants.hpp"
+#include "Game.hpp"
 
 int main(int argc, char* args[]) {
     Game* game = new Game();
