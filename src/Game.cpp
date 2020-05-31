@@ -8,7 +8,7 @@
 glm::vec2 projectile_position = glm::vec2(0.0f, 0.0f);
 glm::vec2 projectile_velocity = glm::vec2(20.0f, 20.0f);
 
-Game::Game() : _loop(false), _window(nullptr), _renderer(nullptr) {}
+Game::Game() : _loop(false), _window(nullptr), _renderer(nullptr), ticks_last_frame(0) {}
 
 Game::~Game() {}
 
@@ -63,30 +63,45 @@ void Game::processInput() {
 
 void Game::update() {
     //delay until we reach our target time in milliseconds
-    int cap_time = FRAME_TARGET_TIME - (SDL_GetTicks() - ticks_last_frame);
-    //delay if we are too fast to process this frame
-    if (cap_time > 0 && cap_time <= FRAME_TARGET_TIME) {
-        SDL_Delay(cap_time);
+    uint32_t delay = FRAME_TIME - (SDL_GetTicks() - ticks_last_frame);
+
+	//if it took 1ms to render the last frame and our target is to render
+	//a frame every 16.6ms, 16.6 - 1 = 15.6ms, that means we must wait 
+	//15.6ms til we can render the next frame to maintain a 60 frames
+	//per second.
+
+    //delay if we are too fast to process this frame to keep within our
+	//target frame time
+    if (delay > 0 && delay <= FRAME_TIME) {
+        SDL_Delay(delay);
     }
 
     //delta time = difference in ticks from last frame converted to seconds
+	//how much time has ellapsed since the last frame.
     float delta_time = (SDL_GetTicks() - ticks_last_frame) / 1000.0f;
-    //clamp deltatime to maximum value
+
+    //clamp deltatime to maximum value. This is so if we are debugging,
+	//our delta time can become huge between steps. This can also happen
+	//if our CPU suddenly becomes bogged down with some other operation
     delta_time = (delta_time > 0.05f) ? 0.05f : delta_time;
 
     //sets the new ticks for the current frame to be used in the next pass
     ticks_last_frame = SDL_GetTicks();
 
-    projectile_position = glm::vec2(projectile_velocity.x,projectile_velocity.y);
+    //use deltatime to update our game objects
+    projectile_position = glm::vec2(projectile_position.x + projectile_velocity.x * delta_time, projectile_position.y + projectile_velocity.y * delta_time);
 }
 
 void Game::render() {
-    //clear screen
+    //set the front buffer to white
     SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    //clear back buffer
     SDL_RenderClear(_renderer);
 
     //create rect to represent projectile, set renderer color and draw it
-    SDL_Rect projectile{(int)projectile_position.x, (int)projectile_position.y, 10, 10};
+    SDL_Rect projectile{static_cast<int>(projectile_position.x), static_cast<int>(projectile_position.y), 10, 10};
+
     SDL_SetRenderDrawColor(_renderer, 0x10, 0x10, 0x10, 0xFF);
     SDL_RenderFillRect(_renderer, &projectile);
 
