@@ -5,22 +5,31 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
+#include <iostream>
+
+#include "Constants.hpp"
+#include "EntityManager.hpp"
+#include "glm.hpp"
+#include "Components/TransformComponent.hpp"
+
 class Game {
    public:
     Game();
     ~Game();
     bool init(int width, int height);
     void processInput();
+	void setup();
     void update();
     void render();
     void destroy();
     bool loop() const;
+	void loadLevel(int level);
 
+    static SDL_Renderer* _renderer;
     uint32_t ticks_last_frame;
 
    private:
     SDL_Window* _window;
-    SDL_Renderer* _renderer;
     bool _loop;
 };
 #endif  // !GAME_H

@@ -4,14 +4,14 @@
 #include "Game.hpp"
 
 int main(int argc, char* args[]) {
-    Game* game = new Game();
-    if (game->init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
-        while (game->loop()) {
-            game->processInput();
-            game->update();
-            game->render();
+    Game game;
+    if (game.init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+        while (game.loop()) {
+            game.processInput();
+            game.update();
+            game.render();
         }
-        game->destroy();
+        game.destroy();
     }
     return 0;
 }

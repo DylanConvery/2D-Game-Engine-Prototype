@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+#include "EntityManager.hpp"
+#include "Component.hpp"
+
 class EntityManager;
 class Component;
 
@@ -16,12 +19,12 @@ class Entity {
     void destroy();
     bool active() const;
 
-    std::string entity_name;
+    std::string _entity_name;
 
    private:
-    EntityManager& manager;
-    std::vector<Component*> components;
-    bool active;
+    EntityManager& _manager;
+    std::vector<Component*> _components;
+    bool _active;
 };
 
 #endif  // !ENTITY_H
