@@ -10,7 +10,7 @@ class Component {
     virtual void update(float delta_time) {}
     virtual void render() {}
 
-    Entity* _owner;
+    Entity* _entity;
 };
 
 #endif  // !COMPONENT_H

@@ -18,7 +18,7 @@ class Game {
     ~Game();
     bool init(int width, int height);
     void processInput();
-	void setup();
+	void start();
     void update();
     void render();
     void destroy();

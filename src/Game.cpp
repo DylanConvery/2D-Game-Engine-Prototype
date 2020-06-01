@@ -39,7 +39,6 @@ bool Game::init(int width, int height) {
 
     //game is now running
     _loop = true;
-	setup();
     return _loop;
 }
 
@@ -60,8 +59,16 @@ void Game::processInput() {
     }
 }
 
-void Game::setup() {
-
+void Game::start() {
+    Entity& projectile(manager.addEntity("projectile"));
+    projectile.addComponent<TransformComponent>(
+        0.0f,
+        0.0f,
+        20.0f,
+        20.0f,
+        10.0f,
+        10.0f,
+        1.0f);
 }
 
 void Game::update() {

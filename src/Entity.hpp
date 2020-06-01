@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "EntityManager.hpp"
 #include "Component.hpp"
+#include "EntityManager.hpp"
 
 class EntityManager;
 class Component;
@@ -18,6 +18,15 @@ class Entity {
     void render();
     void destroy();
     bool active() const;
+
+    template <typename T, typename... Targs>
+    T& addComponent(Targs&&... args) {
+        T* component(new T(std::forward<Targs>(args)...));
+        component->_entity = this;
+        _components.emplace_back(component);
+        component->initialize();
+        return *component;
+    }
 
     std::string _entity_name;
 

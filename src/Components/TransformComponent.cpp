@@ -1,6 +1,13 @@
 #include "TransformComponent.hpp"
 
-TransformComponent::TransformComponent(float position_x, float position_y, float velocity_x, float velocity_y, float width, float height, float scale)
+TransformComponent::TransformComponent(
+    float position_x,
+    float position_y,
+    float velocity_x,
+    float velocity_y,
+    float width,
+    float height,
+    float scale)
     : _position(glm::vec2(position_x, position_y)),
       _velocity(glm::vec2(velocity_x, velocity_y)),
       _width(width),
