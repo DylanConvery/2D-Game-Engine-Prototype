@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <map>
+#include <typeinfo>
 
 #include "Component.hpp"
 #include "EntityManager.hpp"
@@ -25,8 +27,14 @@ class Entity {
         T* component = new T(std::forward<Targs>(args)...);
         component->_entity = this;
         _components.emplace_back(component);
+        _component_type_map[&typeid(*component)] = component;
         component->initialize();
         return *component;
+    }
+
+    template <typename T>
+    T* getComponent(){
+        return static_cast<T*>(_component_type_map.find(&typeid(T))->second);
     }
 
     std::string _entity_name;
@@ -34,6 +42,7 @@ class Entity {
    private:
     EntityManager& _manager;
     std::vector<Component*> _components;
+    std::map<const std::type_info*, Component*> _component_type_map;
     bool _active;
 };
 

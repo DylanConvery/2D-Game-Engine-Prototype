@@ -3,6 +3,7 @@
 
 class Entity;
 
+//abstract class used to describe what a component must do
 class Component {
    public:
     virtual ~Component() {}

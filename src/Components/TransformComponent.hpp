@@ -16,7 +16,8 @@ class TransformComponent : public Component {
         float velocity_y,
         float width,
         float height,
-        float scale);
+        float scale
+    );
 
     void initialize() override;
     void update(float delta_time) override;
