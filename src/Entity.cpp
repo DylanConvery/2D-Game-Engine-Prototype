@@ -16,10 +16,13 @@ void Entity::render() {
     }
 }
 
-void Entity::destroy() {
-    _active = false;
-}
+void Entity::destroy() { _active = false; }
 
-bool Entity::active() const {
-    return _active;
+bool Entity::active() const { return _active; }
+
+void Entity::listComponents() {
+    for (auto& component : _components) {
+        //TODO: get names of components
+        std::cout << "\tComponent<" << "T" << ">\n";
+    }
 }

@@ -22,7 +22,7 @@ void TransformComponent::update(float delta_time) {
 }
 
 void TransformComponent::render() {
-    SDL_Rect transform_rectangle{static_cast<int>(_position.x), static_cast<int>(_position.y), _width, _height};
-    SDL_SetRenderDrawColor(Game::_renderer, 255, 255, 255, 255);
-    SDL_RenderFillRect(Game::_renderer, &transform_rectangle);
+    SDL_Rect transform_rectangle{static_cast<int>(_position.x), static_cast<int>(_position.y), _width * _scale, _height * _scale};
+    SDL_SetRenderDrawColor(Engine::_renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(Engine::_renderer, &transform_rectangle);
 }

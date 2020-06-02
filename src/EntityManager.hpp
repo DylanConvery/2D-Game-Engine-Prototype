@@ -2,6 +2,7 @@
 #define ENTITYMANAGER_H
 
 #include <vector>
+#include <iostream>
 
 #include "Entity.hpp"
 #include "Component.hpp"
@@ -12,6 +13,7 @@ class EntityManager {
     void render();
     bool empty();
     Entity& addEntity(std::string entity_name);
+    void listEntities();
     std::vector<Entity*> getEntities() const;
     unsigned int size() const;
     void clear();

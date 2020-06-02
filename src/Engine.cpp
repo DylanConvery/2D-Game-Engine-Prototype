@@ -1,15 +1,13 @@
-#include "Game.hpp"
+#include "Engine.hpp"
 
 EntityManager manager;
-SDL_Renderer* Game::_renderer;
+SDL_Renderer* Engine::_renderer;
 
-Game::Game() : _loop(false), _window(nullptr), ticks_last_frame(0) {
-    _renderer = nullptr;
-}
+Engine::Engine() : _loop(false), _window(nullptr), ticks_last_frame(0) { _renderer = nullptr; }
 
-Game::~Game() {}
+Engine::~Engine() {}
 
-bool Game::init(int width, int height) {
+bool Engine::init(int width, int height) {
     // initialize SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cerr << "[ERROR] SDL could not initialize! SDL_Error: " << SDL_GetError() << "\n";
@@ -37,12 +35,32 @@ bool Game::init(int width, int height) {
         std::cout << "[SUCCESS] SDL renderer created successfully!\n";
     }
 
-    //game is now running
+    loadLevel(0);
+
+    // game is now running
     _loop = true;
     return _loop;
 }
 
-void Game::processInput() {
+void Engine::loadLevel(int level) {
+    switch (level) {
+        case 0: {
+            Entity& projectile_1(manager.addEntity("projectile_1"));
+            projectile_1.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 10.0f, 50.0f, 1.0f);
+
+            Entity& projectile_2(manager.addEntity("projectile_2"));
+            projectile_2.addComponent<TransformComponent>(50.0f, 0.0f, 20.0f, 20.0f, 50.0f, 10.0f, 3.0f);
+
+            manager.listEntities();
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+}
+
+void Engine::processInput() {
     SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type) {
@@ -59,64 +77,55 @@ void Game::processInput() {
     }
 }
 
-void Game::start() {
-    Entity& projectile(manager.addEntity("projectile"));
-    projectile.addComponent<TransformComponent>(
-        0.0f,
-        0.0f,
-        20.0f,
-        20.0f,
-        10.0f,
-        10.0f,
-        1.0f);
-}
-
-void Game::update() {
-    //delay until we reach our target time in milliseconds
+void Engine::update() {
+    // delay until we reach our target time in milliseconds
     uint32_t delay = FRAME_TIME - (SDL_GetTicks() - ticks_last_frame);
 
-    //if it took 1ms to render the last frame and our target is to render
-    //a frame every 16.6ms, 16.6 - 1 = 15.6ms, that means we must wait
-    //15.6ms til we can render the next frame to maintain a 60 frames
-    //per second.
+    // if it took 1ms to render the last frame and our target is to render
+    // a frame every 16.6ms, 16.6 - 1 = 15.6ms, that means we must wait
+    // 15.6ms til we can render the next frame to maintain a 60 frames
+    // per second.
 
-    //delay if we are too fast to process this frame to keep within our
-    //target frame time
+    // delay if we are too fast to process this frame to keep within our
+    // target frame time
     if (delay > 0 && delay <= FRAME_TIME) {
         SDL_Delay(delay);
     }
 
-    //delta time = difference in ticks from last frame converted to seconds
-    //how much time has ellapsed since the last frame.
+    // delta time = difference in ticks from last frame converted to seconds
+    // how much time has ellapsed since the last frame.
     float delta_time = (SDL_GetTicks() - ticks_last_frame) / 1000.0f;
 
-    //clamp deltatime to maximum value. This is so if we are debugging,
-    //our delta time can become huge between steps. This can also happen
-    //if our CPU suddenly becomes bogged down with some other operation
+    // clamp deltatime to maximum value. This is so if we are debugging,
+    // our delta time can become huge between steps. This can also happen
+    // if our CPU suddenly becomes bogged down with some other operation
     delta_time = (delta_time > 0.05f) ? 0.05f : delta_time;
 
-    //sets the new ticks for the current frame to be used in the next pass
+    // sets the new ticks for the current frame to be used in the next pass
     ticks_last_frame = SDL_GetTicks();
 
     manager.update(delta_time);
 }
 
-void Game::render() {
-    //set the front buffer to white
+void Engine::render() {
+    // set the front buffer to white
     SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-    //clear back buffer
+    // clear back buffer
     SDL_RenderClear(_renderer);
 
-    manager.render();
+    //if we have entities to render
+    if (!manager.empty()) {
+        manager.render();
+    }
 
-    //update screen
+    // update screen
     SDL_RenderPresent(_renderer);
 }
 
-bool Game::loop() const { return _loop; }
+bool Engine::loop() const { return _loop; }
 
-void Game::destroy() {
+void Engine::destroy() {
     // destroy renderer
     SDL_DestroyRenderer(_renderer);
     _renderer = nullptr;

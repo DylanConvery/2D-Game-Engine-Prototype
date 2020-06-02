@@ -18,10 +18,11 @@ class Entity {
     void render();
     void destroy();
     bool active() const;
-
+    void listComponents();
+    
     template <typename T, typename... Targs>
     T& addComponent(Targs&&... args) {
-        T* component(new T(std::forward<Targs>(args)...));
+        T* component = new T(std::forward<Targs>(args)...);
         component->_entity = this;
         _components.emplace_back(component);
         component->initialize();

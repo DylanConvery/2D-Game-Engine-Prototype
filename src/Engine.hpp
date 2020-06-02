@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef ENGINE_H
+#define ENGINE_H
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -12,13 +12,12 @@
 #include "glm.hpp"
 #include "Components/TransformComponent.hpp"
 
-class Game {
+class Engine {
    public:
-    Game();
-    ~Game();
+    Engine();
+    ~Engine();
     bool init(int width, int height);
     void processInput();
-	void start();
     void update();
     void render();
     void destroy();
@@ -32,4 +31,4 @@ class Game {
     SDL_Window* _window;
     bool _loop;
 };
-#endif  // !GAME_H
+#endif  // !ENGINE_H
