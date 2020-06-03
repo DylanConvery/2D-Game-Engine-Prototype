@@ -1,6 +1,7 @@
 build:
 	g++ -w -std=c++14 -Wfatal-errors \
 	./src/*.cpp \
+	./src/Components/*.cpp \
 	-o .\bin\debug\debug \
 	-I"C:\DevelopmentLibraries\SDL2\include" \
 	-L"C:\DevelopmentLibraries\SDL2\lib" \

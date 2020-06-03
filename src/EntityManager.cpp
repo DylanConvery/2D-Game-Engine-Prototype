@@ -30,7 +30,7 @@ std::vector<Entity*> EntityManager::getEntities() const { return _entities; }
 //returns how many entities we have
 unsigned int EntityManager::size() const { return _entities.size(); }
 
-//destroys all entities 
+//destroys all entities
 void EntityManager::clear() {
     for (auto& entity : _entities) {
         entity->destroy();

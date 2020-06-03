@@ -1,5 +1,4 @@
 #include "./Engine.hpp"
-#include "./Components/SpriteComponent.hpp"
 
 // TODO: bad global variables
 EntityManager manager;

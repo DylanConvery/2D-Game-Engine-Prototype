@@ -1,11 +1,12 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <iostream>
 #include <map>
 #include <string>
 #include <typeinfo>
 #include <vector>
-#include <iostream>
+
 #include "./Component.hpp"
 #include "./EntityManager.hpp"
 

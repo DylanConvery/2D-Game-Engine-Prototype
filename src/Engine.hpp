@@ -4,14 +4,16 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <iostream>
-#include "./Constants.hpp"
 
+#include <iostream>
+
+#include "../lib/glm/glm.hpp"
+#include "./AssetManager.hpp"
+#include "./Components/SpriteComponent.hpp"
+#include "./Components/TransformComponent.hpp"
+#include "./Constants.hpp"
 #include "./Entity.hpp"
 #include "./EntityManager.hpp"
-#include "./AssetManager.hpp"
-#include "./Components/TransformComponent.hpp"
-#include "../lib/glm/glm.hpp"
 
 class AssetManager;
 

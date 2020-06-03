@@ -1,8 +1,9 @@
 #ifndef ENTITYMANAGER_H
 #define ENTITYMANAGER_H
 
-#include <vector>
 #include <iostream>
+#include <vector>
+
 #include "./Entity.hpp"
 
 class EntityManager {
