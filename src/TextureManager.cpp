@@ -7,6 +7,7 @@ SDL_Texture* TextureManager::loadTexture(std::string path) {
         std::cerr << "[ERROR] Unable to load image " << path << "! SDL_image error: " << IMG_GetError() << "\n";
         return nullptr;
     }
+
     //create texture from surface pixels
     SDL_Texture* texture = SDL_CreateTextureFromSurface(Engine::_renderer, surface);
     if (texture == nullptr) {
@@ -14,6 +15,7 @@ SDL_Texture* TextureManager::loadTexture(std::string path) {
         SDL_FreeSurface(surface);
         return nullptr;
     }
+    
     //free surface after loading it into our texture
     SDL_FreeSurface(surface);
     return texture;

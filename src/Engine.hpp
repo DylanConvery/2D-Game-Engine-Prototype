@@ -4,16 +4,13 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-
 #include <iostream>
 #include "./Constants.hpp"
-#include "./Entity.hpp"
-#include "./Component.hpp"
-#include "./EntityManager.hpp"
 
+#include "./Entity.hpp"
+#include "./EntityManager.hpp"
 #include "./AssetManager.hpp"
 #include "./Components/TransformComponent.hpp"
-#include "./Components/SpriteComponent.hpp"
 #include "../lib/glm/glm.hpp"
 
 class AssetManager;
@@ -28,7 +25,7 @@ class Engine {
     void render();
     void destroy();
     bool loop() const;
-	void loadLevel(int level);
+    void loadLevel(int level);
 
     static SDL_Renderer* _renderer;
     static AssetManager* _asset_manager;

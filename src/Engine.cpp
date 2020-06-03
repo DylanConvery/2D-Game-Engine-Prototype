@@ -1,13 +1,15 @@
 #include "./Engine.hpp"
+#include "./Components/SpriteComponent.hpp"
 
 // TODO: bad global variables
 EntityManager manager;
-AssetManager* Engine::_asset_manager = new AssetManager(&manager);
+AssetManager* Engine::_asset_manager;
 SDL_Renderer* Engine::_renderer;
 
 // initializes our member variables
 Engine::Engine() : _loop(false), _window(nullptr), ticks_last_frame(0) {
     _renderer = nullptr;
+    _asset_manager = new AssetManager(&manager);
 }
 
 Engine::~Engine() {}
@@ -52,12 +54,19 @@ void Engine::loadLevel(int level) {
     switch (level) {
         case 0: {
             _asset_manager->addTexture("tank-img", "./assets/images/tank-big-right.png");
-            
+
             Entity& tank(manager.addEntity("tank"));
-            tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 10.0f, 50.0f, 1.0f);
+            tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 32.0f, 32.0f, 1.0f);
             tank.addComponent<SpriteComponent>("tank-img");
 
             manager.listEntities();
+
+            if (tank.hasComponent<SpriteComponent>()) {
+                std::cout << "has sprite component\n";
+            } else {
+                std::cerr << "no sprite component attached";
+            }
+
             break;
         }
         default: {

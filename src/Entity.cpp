@@ -23,10 +23,10 @@ void Entity::destroy() { _active = false; }
 //check if we our still active
 bool Entity::active() const { return _active; }
 
-//prints the attached components
-void Entity::listComponents() {
-    for (auto& component : _components) {
-        //TODO: get names of components
-        std::cout << "\tComponent<" << "T" << ">\n";
+//prints out attached components, will only list one component type,
+//if you have 2 of the same components, it will only be listed once
+void Entity::listComponents() const {
+    for (auto element : _component_type_map) {
+        std::cout << "\tComponent<" << element.first->name() << ">\n";
     }
 }
