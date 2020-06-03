@@ -5,7 +5,6 @@
 #include <string>
 #include "./TextureManager.hpp"
 #include "./EntityManager.hpp"
-#include "./Components/TransformComponent.hpp"
 
 class AssetManager {
    public:

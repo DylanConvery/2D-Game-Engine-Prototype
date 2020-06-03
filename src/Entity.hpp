@@ -1,12 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <string>
-#include <vector>
 #include <map>
+#include <string>
 #include <typeinfo>
-#include "./EntityManager.hpp"
+#include <vector>
+#include <iostream>
 #include "./Component.hpp"
+#include "./EntityManager.hpp"
 
 class EntityManager;
 class Component;
@@ -19,9 +20,9 @@ class Entity {
     void render();
     void destroy();
     bool active() const;
-    void listComponents();
-    
-    //add generic component to our component vector.
+    void listComponents() const;
+
+    // add generic component to our component vector.
     template <typename T, typename... Targs>
     T& addComponent(Targs&&... args) {
         T* component = new T(std::forward<Targs>(args)...);
@@ -33,8 +34,18 @@ class Entity {
     }
 
     template <typename T>
-    T* getComponent(){
+    T* getComponent() {
         return static_cast<T*>(_component_type_map.find(&typeid(T))->second);
+    }
+
+    template <typename T>
+    bool hasComponent() const {
+        for (auto element : _component_type_map) {
+            if (element.first->name() == typeid(T).name()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     std::string _entity_name;

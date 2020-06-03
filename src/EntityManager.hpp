@@ -3,9 +3,7 @@
 
 #include <vector>
 #include <iostream>
-
 #include "./Entity.hpp"
-#include "./Component.hpp"
 
 class EntityManager {
    public:

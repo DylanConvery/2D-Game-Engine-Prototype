@@ -2,6 +2,7 @@
 #define TEXTUREMANAGER_H
 
 #include "./Engine.hpp"
+#include <iostream>
 
 class TextureManager {
    public:

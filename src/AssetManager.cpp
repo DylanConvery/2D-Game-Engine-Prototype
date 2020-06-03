@@ -14,7 +14,7 @@ void AssetManager::addTexture(std::string textureID, std::string path) {
     _textures.emplace(textureID, TextureManager::loadTexture(path));
 }
 
-//returns a 
+//returns a point to a texture with matching textureID
 SDL_Texture* AssetManager::getTexture(std::string textureID) {
     return _textures.find(textureID)->second;
 }
