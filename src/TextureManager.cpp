@@ -1,4 +1,4 @@
-#include "TextureManager.hpp"
+#include "./TextureManager.hpp"
 
 SDL_Texture* TextureManager::loadTexture(std::string path) {
     //load image

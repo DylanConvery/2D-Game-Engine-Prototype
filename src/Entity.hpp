@@ -5,9 +5,8 @@
 #include <vector>
 #include <map>
 #include <typeinfo>
-
-#include "Component.hpp"
-#include "EntityManager.hpp"
+#include "./EntityManager.hpp"
+#include "./Component.hpp"
 
 class EntityManager;
 class Component;
@@ -22,6 +21,7 @@ class Entity {
     bool active() const;
     void listComponents();
     
+    //add generic component to our component vector.
     template <typename T, typename... Targs>
     T& addComponent(Targs&&... args) {
         T* component = new T(std::forward<Targs>(args)...);

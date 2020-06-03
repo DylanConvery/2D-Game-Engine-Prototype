@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Constants.hpp"
-#include "Engine.hpp"
+#include "./Constants.hpp"
+#include "./Engine.hpp"
 
 int main(int argc, char* args[]) {
     Engine game;

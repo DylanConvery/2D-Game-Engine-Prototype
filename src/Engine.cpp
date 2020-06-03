@@ -1,11 +1,14 @@
-#include "Engine.hpp"
+#include "./Engine.hpp"
 
-//TODO: bad global variables
+// TODO: bad global variables
 EntityManager manager;
+AssetManager* Engine::_asset_manager = new AssetManager(&manager);
 SDL_Renderer* Engine::_renderer;
 
-//initializes our member variables
-Engine::Engine() : _loop(false), _window(nullptr), ticks_last_frame(0) { _renderer = nullptr; }
+// initializes our member variables
+Engine::Engine() : _loop(false), _window(nullptr), ticks_last_frame(0) {
+    _renderer = nullptr;
+}
 
 Engine::~Engine() {}
 
@@ -44,12 +47,15 @@ bool Engine::init(int width, int height) {
     return _loop;
 }
 
-//TODO: remove this
+// TODO: remove this
 void Engine::loadLevel(int level) {
     switch (level) {
         case 0: {
-            Entity& projectile(manager.addEntity("projectile"));
-            projectile.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 10.0f, 50.0f, 1.0f);
+            _asset_manager->addTexture("tank-img", "./assets/images/tank-big-right.png");
+            
+            Entity& tank(manager.addEntity("tank"));
+            tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 10.0f, 50.0f, 1.0f);
+            tank.addComponent<SpriteComponent>("tank-img");
 
             manager.listEntities();
             break;
@@ -60,7 +66,7 @@ void Engine::loadLevel(int level) {
     }
 }
 
-//processes input
+// processes input
 void Engine::processInput() {
     SDL_Event event;
     SDL_PollEvent(&event);
@@ -78,7 +84,7 @@ void Engine::processInput() {
     }
 }
 
-//updates the state of our application
+// updates the state of our application
 void Engine::update() {
     // delay until we reach our target time in milliseconds
     uint32_t delay = FRAME_TIME - (SDL_GetTicks() - ticks_last_frame);
@@ -109,7 +115,7 @@ void Engine::update() {
     manager.update(delta_time);
 }
 
-//renders the state of our application, shows our entities 
+// renders the state of our application, shows our entities
 void Engine::render() {
     // set the front buffer to white
     SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -117,7 +123,7 @@ void Engine::render() {
     // clear back buffer
     SDL_RenderClear(_renderer);
 
-    //if we have entities to render
+    // if we have entities to render
     if (!manager.empty()) {
         manager.render();
     }
@@ -126,10 +132,10 @@ void Engine::render() {
     SDL_RenderPresent(_renderer);
 }
 
-//check to see if the game is active or not
+// check to see if the game is active or not
 bool Engine::loop() const { return _loop; }
 
-//shuts down sdl and cleans everything up
+// shuts down sdl and cleans everything up
 void Engine::destroy() {
     // destroy renderer
     SDL_DestroyRenderer(_renderer);

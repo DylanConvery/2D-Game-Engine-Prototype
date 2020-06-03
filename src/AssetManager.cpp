@@ -1,4 +1,4 @@
-#include "AssetManager.hpp"
+#include "./AssetManager.hpp"
 
 AssetManager::AssetManager(EntityManager* manager) : _manager(manager) {}
 

@@ -4,8 +4,8 @@
 #include <SDL.h>
 
 #include "../EntityManager.hpp"
+#include "../../lib/glm/glm.hpp"
 #include "../Engine.hpp"
-#include "glm.hpp"
 
 class TransformComponent : public Component {
    public:

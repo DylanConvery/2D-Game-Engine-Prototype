@@ -1,4 +1,4 @@
-#include "EntityManager.hpp"
+#include "./EntityManager.hpp"
 
 //updates all our entities within our application
 void EntityManager::update(float delta_time) {
@@ -38,7 +38,7 @@ void EntityManager::clear() {
 }
 
 //prints all entities we manage
-void EntityManager::listEntities() {
+void EntityManager::listEntities() const {
     for (auto& entity : _entities) {
         std::cout << "Entity Name: " << entity->_entity_name << "\n";
         entity->listComponents();
