@@ -6,11 +6,17 @@
 #include <SDL_ttf.h>
 
 #include <iostream>
+#include "./Constants.hpp"
+#include "./Entity.hpp"
+#include "./Component.hpp"
+#include "./EntityManager.hpp"
 
-#include "Constants.hpp"
-#include "EntityManager.hpp"
-#include "glm.hpp"
-#include "Components/TransformComponent.hpp"
+#include "./AssetManager.hpp"
+#include "./Components/TransformComponent.hpp"
+#include "./Components/SpriteComponent.hpp"
+#include "../lib/glm/glm.hpp"
+
+class AssetManager;
 
 class Engine {
    public:
@@ -25,6 +31,7 @@ class Engine {
 	void loadLevel(int level);
 
     static SDL_Renderer* _renderer;
+    static AssetManager* _asset_manager;
     uint32_t ticks_last_frame;
 
    private:

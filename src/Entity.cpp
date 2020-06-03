@@ -1,4 +1,4 @@
-#include "Entity.hpp"
+#include "./Entity.hpp"
 
 Entity::Entity(EntityManager& manager) : _manager(manager), _active(true) {}
 

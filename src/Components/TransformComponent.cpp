@@ -1,4 +1,4 @@
-#include "TransformComponent.hpp"
+#include "./TransformComponent.hpp"
 
 //initialize our members
 TransformComponent::TransformComponent(
@@ -24,7 +24,5 @@ void TransformComponent::update(float delta_time) {
 }
 
 void TransformComponent::render() {
-    SDL_Rect transform_rectangle{static_cast<int>(_position.x), static_cast<int>(_position.y), _width * _scale, _height * _scale};
-    SDL_SetRenderDrawColor(Engine::_renderer, 0, 0, 0, 255);
-    SDL_RenderFillRect(Engine::_renderer, &transform_rectangle);
+    
 }
