@@ -1,7 +1,7 @@
 #ifndef TRANSFORMCOMPONENT_H
 #define TRANSFORMCOMPONENT_H
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "../../lib/glm/glm.hpp"
 #include "../Component.hpp"
 
