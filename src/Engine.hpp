@@ -8,12 +8,12 @@
 #include <iostream>
 
 #include "../lib/glm/glm.hpp"
-#include "./AssetManager.hpp"
-#include "./Components/SpriteComponent.hpp"
-#include "./Components/TransformComponent.hpp"
-#include "./Constants.hpp"
-#include "./Entity.hpp"
-#include "./EntityManager.hpp"
+#include "AssetManager.hpp"
+#include "Components/SpriteComponent.hpp"
+#include "Components/TransformComponent.hpp"
+#include "Constants.hpp"
+#include "Entity.hpp"
+#include "EntityManager.hpp"
 
 class AssetManager;
 

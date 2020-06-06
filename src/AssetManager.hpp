@@ -3,8 +3,8 @@
 
 #include <map>
 #include <string>
-#include "./TextureManager.hpp"
-#include "./EntityManager.hpp"
+#include "TextureManager.hpp"
+#include "EntityManager.hpp"
 
 class AssetManager {
    public:

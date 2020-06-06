@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "./Entity.hpp"
+#include "Entity.hpp"
 
 class EntityManager {
    public:

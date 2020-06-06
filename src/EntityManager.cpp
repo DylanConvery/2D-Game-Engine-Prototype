@@ -1,4 +1,4 @@
-#include "./EntityManager.hpp"
+#include "EntityManager.hpp"
 
 //updates all our entities within our application
 void EntityManager::update(float delta_time) {

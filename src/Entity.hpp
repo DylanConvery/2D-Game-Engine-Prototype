@@ -7,8 +7,8 @@
 #include <typeinfo>
 #include <vector>
 
-#include "./Component.hpp"
-#include "./EntityManager.hpp"
+#include "Component.hpp"
+#include "EntityManager.hpp"
 
 class EntityManager;
 class Component;

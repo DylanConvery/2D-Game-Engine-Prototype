@@ -1,4 +1,4 @@
-#include "./Engine.hpp"
+#include "Engine.hpp"
 
 // TODO: bad global variables
 EntityManager manager;
@@ -53,10 +53,15 @@ void Engine::loadLevel(int level) {
     switch (level) {
         case 0: {
             _asset_manager->addTexture("tank-img", "./assets/images/tank-big-right.png");
+            _asset_manager->addTexture("chopper-spritesheet", "./assets/images/chopper-spritesheet.png");
 
             Entity& tank(manager.addEntity("tank"));
             tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 32.0f, 32.0f, 1.0f);
             tank.addComponent<SpriteComponent>("tank-img");
+
+            Entity& chopper(manager.addEntity("chopper"));
+            chopper.addComponent<TransformComponent>(0.0f, 0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
+            chopper.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
 
             manager.listEntities();
 
