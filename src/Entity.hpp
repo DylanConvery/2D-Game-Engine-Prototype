@@ -7,8 +7,8 @@
 #include <typeinfo>
 #include <vector>
 
-#include "./Component.hpp"
-#include "./EntityManager.hpp"
+#include "Component.hpp"
+#include "EntityManager.hpp"
 
 class EntityManager;
 class Component;
@@ -36,7 +36,13 @@ class Entity {
 
     template <typename T>
     T* getComponent() {
-        return static_cast<T*>(_component_type_map.find(&typeid(T))->second);
+        auto element = _component_type_map.find(&typeid(T));
+        if(element == _component_type_map.end()){
+            std::cerr << "[ERROR] " << _entity_name << "<" << typeid(T).name() <<"> Component not found\n";
+            return nullptr;
+        } else {
+            return static_cast<T*>(element->second);
+        }        
     }
 
     template <typename T>

@@ -1,4 +1,4 @@
-#include "./AssetManager.hpp"
+#include "AssetManager.hpp"
 
 AssetManager::AssetManager(EntityManager* manager) : _manager(manager) {}
 
@@ -16,5 +16,11 @@ void AssetManager::addTexture(std::string textureID, std::string path) {
 
 //returns a point to a texture with matching textureID
 SDL_Texture* AssetManager::getTexture(std::string textureID) {
-    return _textures.find(textureID)->second;
+    auto element = _textures.find(textureID);
+    if(element == _textures.end()){
+            std::cerr << "[ERROR] Texure not found\n";
+        return nullptr;
+    } else {
+        return element->second;
+    }
 }

@@ -1,19 +1,19 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <iostream>
 
 #include "../lib/glm/glm.hpp"
-#include "./AssetManager.hpp"
-#include "./Components/SpriteComponent.hpp"
-#include "./Components/TransformComponent.hpp"
-#include "./Constants.hpp"
-#include "./Entity.hpp"
-#include "./EntityManager.hpp"
+#include "AssetManager.hpp"
+#include "Components/SpriteComponent.hpp"
+#include "Components/TransformComponent.hpp"
+#include "Constants.hpp"
+#include "Entity.hpp"
+#include "EntityManager.hpp"
 
 class AssetManager;
 
