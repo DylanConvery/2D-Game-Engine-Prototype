@@ -54,23 +54,21 @@ void Engine::loadLevel(int level) {
         case 0: {
             _asset_manager->addTexture("tank-img", "./assets/images/tank-big-right.png");
             _asset_manager->addTexture("chopper-spritesheet", "./assets/images/chopper-spritesheet.png");
+            _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
 
             Entity& tank(manager.addEntity("tank"));
             tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 32.0f, 32.0f, 1.0f);
             tank.addComponent<SpriteComponent>("tank-img");
-
+ 
             Entity& chopper(manager.addEntity("chopper"));
             chopper.addComponent<TransformComponent>(0.0f, 0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             chopper.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
 
+            Entity& radar = manager.addEntity("radar");
+            radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);
+            radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
+
             manager.listEntities();
-
-            if (tank.hasComponent<SpriteComponent>()) {
-                std::cout << "has sprite component\n";
-            } else {
-                std::cerr << "no sprite component attached";
-            }
-
             break;
         }
         default: {

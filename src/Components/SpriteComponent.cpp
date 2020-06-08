@@ -1,6 +1,6 @@
 #include "SpriteComponent.hpp"
 
-SpriteComponent::SpriteComponent(std::string asset_texture_id) : _animated(false), _fixed(false) {
+SpriteComponent::SpriteComponent(std::string asset_texture_id) : _animated(false), _fixed(false), _index(0) {
     setTexture(asset_texture_id);
 }
 
@@ -42,23 +42,29 @@ void SpriteComponent::setTexture(std::string asset_texture_id) {
 //TODO: bad because if we don't have a TransformComponent attached, we try dereference a null ptr
 void SpriteComponent::initialize() {
     _transform = _entity->getComponent<TransformComponent>();
-    _source_rectangle.x = 0;
-    _source_rectangle.y = 0;
-    _source_rectangle.w = static_cast<int>(_transform->_width);
-    _source_rectangle.h = static_cast<int>(_transform->_height);
+    //make sure we get transform component to work with
+    if(_transform != nullptr){
+        _source_rectangle.x = 0;
+        _source_rectangle.y = 0;
+        _source_rectangle.w = static_cast<int>(_transform->_width);
+        _source_rectangle.h = static_cast<int>(_transform->_height);
+    }
 }
 
 void SpriteComponent::update(float delta_time) {
-    if(_animated){
-        _source_rectangle.x = _source_rectangle.w * static_cast<int>((SDL_GetTicks() / _speed) % _frames);
+    //make sure we have a transform component to work with
+    if(_transform != nullptr){
+        //move our source retangle back and forth horizontally across our sprite sheet every (SDL_ticks / speed) % frames
+        if(_animated){
+            _source_rectangle.x = _source_rectangle.w * static_cast<int>((SDL_GetTicks() / _speed) % _frames);
+        }
+        //move our source rectangle up and down
+        _source_rectangle.y = _index * _transform->_height;
+        _destination_rect.x = static_cast<int>(_transform->_position.x);
+        _destination_rect.y = static_cast<int>(_transform->_position.y);
+        _destination_rect.w = static_cast<int>(_transform->_width * _transform->_scale);
+        _destination_rect.h = static_cast<int>(_transform->_height * _transform->_scale);
     }
-    _source_rectangle.y = _index * _transform->_height;
-
-    _destination_rect.x = static_cast<int>(_transform->_position.x);
-    _destination_rect.y = static_cast<int>(_transform->_position.y);
-    _destination_rect.w = static_cast<int>(_transform->_width * _transform->_scale);
-    _destination_rect.h = static_cast<int>(_transform->_height * _transform->_scale);
-    std::cout << _index << "\n" << _animation << '\n';
 }
 
 void SpriteComponent::render() {
