@@ -4,6 +4,7 @@
 EntityManager manager;
 AssetManager* Engine::_asset_manager;
 SDL_Renderer* Engine::_renderer;
+SDL_Event Engine::_event;
 
 // initializes our member variables
 Engine::Engine() : _loop(false), _window(nullptr), ticks_last_frame(0) {
@@ -63,6 +64,7 @@ void Engine::loadLevel(int level) {
             Entity& chopper(manager.addEntity("chopper"));
             chopper.addComponent<TransformComponent>(0.0f, 0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             chopper.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
+            chopper.addComponent<PlayerInputComponent>("w", "s", "a", "d", "space");
 
             Entity& radar = manager.addEntity("radar");
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);
@@ -79,14 +81,13 @@ void Engine::loadLevel(int level) {
 
 // processes input
 void Engine::processInput() {
-    SDL_Event event;
-    SDL_PollEvent(&event);
-    switch (event.type) {
+    SDL_PollEvent(&_event);
+    switch (_event.type) {
         case SDL_QUIT:
             _loop = false;
             break;
         case SDL_KEYDOWN:
-            if (event.key.keysym.sym == SDLK_ESCAPE) {
+            if (_event.key.keysym.sym == SDLK_ESCAPE) {
                 _loop = false;
                 break;
             }

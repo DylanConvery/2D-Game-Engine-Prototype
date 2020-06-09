@@ -11,6 +11,7 @@
 #include "AssetManager.hpp"
 #include "Components/SpriteComponent.hpp"
 #include "Components/TransformComponent.hpp"
+#include "Components/PlayerInputComponent.hpp"
 #include "Constants.hpp"
 #include "Entity.hpp"
 #include "EntityManager.hpp"
@@ -31,6 +32,7 @@ class Engine {
 
     static SDL_Renderer* _renderer;
     static AssetManager* _asset_manager;
+    static SDL_Event _event;
     uint32_t ticks_last_frame;
 
    private:
