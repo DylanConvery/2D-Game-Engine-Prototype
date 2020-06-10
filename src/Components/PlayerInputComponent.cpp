@@ -30,19 +30,23 @@ void PlayerInputComponent::update(float delta_time) {
     if (Engine::_event.type == SDL_KEYDOWN) {
         std::string key_code = std::to_string(Engine::_event.key.keysym.sym);
         if (key_code.compare(_up_key) == 0) {
-            _transform->_velocity.y = -20;
+            _transform->_velocity.y = -50;
+            _transform->_velocity.x = 0;
             _sprite->play("up");
         }
         if (key_code.compare(_down_key) == 0) {
-            _transform->_velocity.y = 20;
+            _transform->_velocity.y = 50;
+            _transform->_velocity.x = 0;
             _sprite->play("down");
         }
         if (key_code.compare(_left_key) == 0) {
-            _transform->_velocity.x = -20;
+            _transform->_velocity.x = -50;
+            _transform->_velocity.y = 0;
             _sprite->play("left");
         }
         if (key_code.compare(_right_key) == 0) {
-            _transform->_velocity.x = 20;
+            _transform->_velocity.x = 50;
+            _transform->_velocity.y = 0;
             _sprite->play("right");
         }
         if (key_code.compare(_action_key) == 0) {

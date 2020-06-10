@@ -7,31 +7,31 @@ SpriteComponent::SpriteComponent(std::string asset_texture_id) : _animated(false
 SpriteComponent::SpriteComponent(std::string animation_id, unsigned frames, unsigned speed, bool directed, bool fixed) : _animated(true), _frames(frames), _speed(speed), _fixed(fixed) {
     if (directed) {
         Animation down(0, frames, speed);
-        Animation left(1, frames, speed);
-        Animation right(2, frames, speed);
+        Animation right(1, frames, speed);
+        Animation left(2, frames, speed);
         Animation up(3, frames, speed);
 
         _animations.emplace("down", down);
-        _animations.emplace("left", left);
         _animations.emplace("right", right);
+        _animations.emplace("left", left);
         _animations.emplace("up", up);
 
         _index = 0;
         _animation = "down";
     } else {
         Animation animation(0, frames, speed);
-        _animations.emplace("single_animation", animation);
+        _animations.emplace("single_frame", animation);
         _index = 0;
-        _animation = "single_animation";
+        _animation = "single_frame";
     }
     play(_animation);
     setTexture(animation_id);
 }
 
 void SpriteComponent::play(std::string animation){
-    unsigned frames = _animations[animation]._frames;
-    unsigned index = _animations[animation]._index;
-    unsigned speed = _animations[animation]._speed;
+     _frames = _animations[animation]._frames;
+     _index = _animations[animation]._index;
+     _speed = _animations[animation]._speed;
     _animation = animation;
 }
 
