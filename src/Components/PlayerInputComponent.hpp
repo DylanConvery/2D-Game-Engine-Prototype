@@ -1,15 +1,15 @@
 #ifndef PLAYERINPUTCOMPONENT_H
 #define PLAYERINPUTCOMPONENT_H
 
-#include "string"
-#include "../Component.hpp"
 #include "../AssetManager.hpp"
-#include "TransformComponent.hpp"
+#include "../Component.hpp"
 #include "SpriteComponent.hpp"
+#include "TransformComponent.hpp"
+#include "string"
 
 class SpriteComponent;
 
-class PlayerInputComponent : public Component{
+class PlayerInputComponent : public Component {
    public:
     PlayerInputComponent();
     PlayerInputComponent(std::string up_key, std::string down_key, std::string left_key, std::string right_key, std::string action_key);
@@ -27,6 +27,9 @@ class PlayerInputComponent : public Component{
 
     TransformComponent* _transform;
     SpriteComponent* _sprite;
+
+   private:
+	void boundingBoxCheck();
 };
 
 #endif  // !PLAYERINPUTCOMPONENT_H
