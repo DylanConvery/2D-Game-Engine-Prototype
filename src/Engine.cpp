@@ -5,6 +5,7 @@ EntityManager manager;
 AssetManager* Engine::_asset_manager;
 SDL_Renderer* Engine::_renderer;
 SDL_Event Engine::_event;
+Map* map;
 
 // initializes our member variables
 Engine::Engine() : _loop(false), _window(nullptr), ticks_last_frame(0) {
@@ -21,6 +22,13 @@ bool Engine::init(int width, int height) {
         return false;
     } else {
         std::cout << "[SUCCESS] SDL initialized successfully!\n";
+    }
+
+    // set texture filtering to linear
+    if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0")) {
+        std::cout << "[WARNING] Linear texture filtering not enabled!\n";
+    } else {
+        std::cout << "[SUCCESS] Linear texture filterning enabled!\n";
     }
 
     // create window
@@ -56,6 +64,10 @@ void Engine::loadLevel(int level) {
             _asset_manager->addTexture("tank-img", "./assets/images/tank-big-right.png");
             _asset_manager->addTexture("chopper-spritesheet", "./assets/images/chopper-spritesheet.png");
             _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
+            _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
+
+            map = new Map("jungle-tilemap", 2, 32);
+            map->loadMap("./assets/tilemaps/jungle.map", 25, 20);
 
             Entity& tank(manager.addEntity("tank"));
             tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 32.0f, 32.0f, 1.0f);
@@ -64,7 +76,7 @@ void Engine::loadLevel(int level) {
             Entity& chopper(manager.addEntity("chopper"));
             chopper.addComponent<TransformComponent>(0.0f, 0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             chopper.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
-            chopper.addComponent<PlayerInputComponent>("w", "s", "a", "d", "space");
+            chopper.addComponent<PlayerInputComponent>(50, "w", "s", "a", "d", "space");
 
             Entity& radar = manager.addEntity("radar");
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);

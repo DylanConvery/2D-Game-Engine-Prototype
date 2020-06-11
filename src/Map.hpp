@@ -4,20 +4,22 @@
 #include <string>
 #include "Engine.hpp"
 #include "EntityManager.hpp"
+#include <fstream>
+#include "Components/TileComponent.hpp"
 
 extern EntityManager manager;
 
 class Map{
 	public:
-		Map(std::string texture_id, int scale, int width, int height);
+		Map(std::string texture_id, int scale, int tile_size);
 		~Map();
 		void loadMap(std::string file_path, int map_size_x, int map_size_y);
-		void addTile(int source_x, int source_y, int x, int y);
+		void addTile(int source_x, int source_y, int destination_x, int destination_y);
 	private:
+		static int _tile_count;
 		std::string _texture_id;
+		int _tile_size;
 		int _scale;
-		int _width;
-		int _height;
 };
 
 #endif // !MAP_H

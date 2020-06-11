@@ -12,8 +12,8 @@ class SpriteComponent;
 class PlayerInputComponent : public Component {
    public:
     PlayerInputComponent();
-    PlayerInputComponent(std::string up_key, std::string down_key, std::string left_key, std::string right_key, std::string action_key);
-    std::string getSDLStringCode(std::string key);
+    PlayerInputComponent(float speed, std::string up_key, std::string down_key, std::string left_key, std::string right_key, std::string action_key);
+    std::string getSDLStringCode(std::string key) const;
 
     void initialize() override;
     void update(float delta_time) override;
@@ -27,9 +27,10 @@ class PlayerInputComponent : public Component {
 
     TransformComponent* _transform;
     SpriteComponent* _sprite;
+    float _speed;
 
    private:
-	void boundingBoxCheck();
+    void boundingBoxCheck();
 };
 
 #endif  // !PLAYERINPUTCOMPONENT_H

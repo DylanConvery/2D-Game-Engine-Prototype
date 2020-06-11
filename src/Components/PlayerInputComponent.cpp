@@ -1,8 +1,9 @@
 #include "PlayerInputComponent.hpp"
 
-PlayerInputComponent::PlayerInputComponent(std::string up_key, std::string down_key, std::string left_key, std::string right_key, std::string action_key) : _up_key(getSDLStringCode(up_key)), _down_key(getSDLStringCode(down_key)), _left_key(getSDLStringCode(left_key)), _right_key(getSDLStringCode(right_key)), _action_key(getSDLStringCode(action_key)) {}
+PlayerInputComponent::PlayerInputComponent(float speed, std::string up_key, std::string down_key, std::string left_key, std::string right_key, std::string action_key) : _speed(speed), _up_key(getSDLStringCode(up_key)), _down_key(getSDLStringCode(down_key)), _left_key(getSDLStringCode(left_key)), _right_key(getSDLStringCode(right_key)), _action_key(getSDLStringCode(action_key)) {}
 
-std::string PlayerInputComponent::getSDLStringCode(std::string key) {
+//returns the SDL scancode in decimal or ascii representation
+std::string PlayerInputComponent::getSDLStringCode(std::string key) const {
     if (key.compare("up") == 0) {
         return "1073741906";
     }
@@ -26,32 +27,31 @@ void PlayerInputComponent::initialize() {
     _sprite = _entity->getComponent<SpriteComponent>();
 }
 
-const int speed = 500;
-
+//translates our position
 void PlayerInputComponent::update(float delta_time) {
     if (Engine::_event.type == SDL_KEYDOWN) {
         std::string key_code = std::to_string(Engine::_event.key.keysym.sym);
 
         if (key_code.compare(_up_key) == 0) {
-            _transform->_velocity.y = -speed;
+            _transform->_velocity.y = -_speed;
             _transform->_velocity.x = 0;
             _sprite->play("up");
         }
 
         if (key_code.compare(_down_key) == 0) {
-            _transform->_velocity.y = speed;
+            _transform->_velocity.y = _speed;
             _transform->_velocity.x = 0;
             _sprite->play("down");
         }
 
         if (key_code.compare(_left_key) == 0) {
-            _transform->_velocity.x = -speed;
+            _transform->_velocity.x = -_speed;
             _transform->_velocity.y = 0;
             _sprite->play("left");
         }
 
         if (key_code.compare(_right_key) == 0) {
-            _transform->_velocity.x = speed;
+            _transform->_velocity.x = _speed;
             _transform->_velocity.y = 0;
             _sprite->play("right");
         }
@@ -82,6 +82,7 @@ void PlayerInputComponent::update(float delta_time) {
 	boundingBoxCheck();
 }
 
+//makes sure we don't go outside the bounds of the screen
 void PlayerInputComponent::boundingBoxCheck(){
 	if (_transform->_position.y <= 0) {
         _transform->_position.y = 0;

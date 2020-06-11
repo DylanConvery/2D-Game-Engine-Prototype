@@ -4,6 +4,7 @@ SpriteComponent::SpriteComponent(std::string asset_texture_id) : _animated(false
     setTexture(asset_texture_id);
 }
 
+//creates appropriate animations for the given case
 SpriteComponent::SpriteComponent(std::string animation_id, unsigned frames, unsigned speed, bool directed, bool fixed) : _animated(true), _frames(frames), _speed(speed), _fixed(fixed) {
     if (directed) {
         Animation down(0, frames, speed);
@@ -28,6 +29,7 @@ SpriteComponent::SpriteComponent(std::string animation_id, unsigned frames, unsi
     setTexture(animation_id);
 }
 
+//sets our member variables to the appropriate values for the specified animation
 void SpriteComponent::play(std::string animation){
      _frames = _animations[animation]._frames;
      _index = _animations[animation]._index;

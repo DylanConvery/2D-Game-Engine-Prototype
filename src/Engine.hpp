@@ -13,6 +13,7 @@
 #include "Components/TransformComponent.hpp"
 #include "Components/PlayerInputComponent.hpp"
 #include "Components/TileComponent.hpp"
+#include "Map.hpp"
 #include "Constants.hpp"
 #include "Entity.hpp"
 #include "EntityManager.hpp"

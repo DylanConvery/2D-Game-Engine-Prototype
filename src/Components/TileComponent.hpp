@@ -9,7 +9,7 @@
 
 class TileComponent : public Component{
 	public:
-		TileComponent(int source_x, int source_y, int destination_x, int destination_y, int tile_width, int tile_height, int tile_scale, std::string asset_texture_id);
+		TileComponent(int source_x, int source_y, int destination_x, int destination_y, int tile_size, int tile_scale, std::string asset_texture_id);
 		~TileComponent();
 
 		void update(float delta_time) override;
