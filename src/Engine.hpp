@@ -12,6 +12,7 @@
 #include "Components/SpriteComponent.hpp"
 #include "Components/TransformComponent.hpp"
 #include "Components/PlayerInputComponent.hpp"
+#include "Components/TileComponent.hpp"
 #include "Constants.hpp"
 #include "Entity.hpp"
 #include "EntityManager.hpp"
