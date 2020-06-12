@@ -2,7 +2,7 @@
 
 Entity::Entity(EntityManager& manager) : _manager(manager), _active(true) {}
 
-Entity::Entity(EntityManager& manager, std::string entity_name) : _manager(manager), _entity_name(entity_name), _active(true) {}
+Entity::Entity(EntityManager& manager, std::string entity_name, layers layer) : _manager(manager), _entity_name(entity_name), _layer(layer), _active(true) {}
 
 //if we have any components, call their update functions
 void Entity::update(float delta_time) {

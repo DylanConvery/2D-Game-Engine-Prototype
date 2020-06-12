@@ -11,9 +11,10 @@ class EntityManager {
     void update(float delta_time);
     void render();
     bool empty();
-    Entity& addEntity(std::string entity_name);
+    Entity& addEntity(std::string entity_name, layers layer);
     void listEntities() const;
     std::vector<Entity*> getEntities() const;
+    std::vector<Entity*> getEntitiesByLayer(layers layer) const;
     unsigned int size() const;
     void clear();
 

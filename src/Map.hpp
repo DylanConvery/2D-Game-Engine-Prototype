@@ -5,6 +5,7 @@
 #include "Engine.hpp"
 #include "EntityManager.hpp"
 #include <fstream>
+#include "constants.hpp"
 #include "Components/TileComponent.hpp"
 
 extern EntityManager manager;

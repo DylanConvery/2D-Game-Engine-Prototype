@@ -6,7 +6,7 @@
 #include <string>
 #include <typeinfo>
 #include <vector>
-
+#include "Constants.hpp"
 #include "Component.hpp"
 #include "EntityManager.hpp"
 
@@ -16,7 +16,7 @@ class Component;
 class Entity {
    public:
     Entity(EntityManager& manager);
-    Entity(EntityManager& manager, std::string entity_name);
+    Entity(EntityManager& manager, std::string entity_name, layers layer);
     void update(float delta_time);
     void render();
     void destroy();
@@ -34,6 +34,7 @@ class Entity {
         return *component;
     }
 
+    //checks if we have the specified component and returns it if we have it.
     template <typename T>
     T* getComponent() {
         auto element = _component_type_map.find(&typeid(T));
@@ -45,6 +46,7 @@ class Entity {
         }        
     }
 
+    //returns true if our entity has a specific component or false otherwise
     template <typename T>
     bool hasComponent() const {
         for (auto element : _component_type_map) {
@@ -56,6 +58,7 @@ class Entity {
     }
 
     std::string _entity_name;
+    layers _layer;
 
    private:
     EntityManager& _manager;

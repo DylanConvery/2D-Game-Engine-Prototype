@@ -32,7 +32,7 @@ bool Engine::init(int width, int height) {
     }
 
     // create window
-    _window = SDL_CreateWindow("Debug", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_BORDERLESS);
+    _window = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
     if (!_window) {
         std::cerr << "[ERROR] Window could not be created! SDL_Error: " << SDL_GetError() << "\n";
         return false;
@@ -69,16 +69,16 @@ void Engine::loadLevel(int level) {
             map = new Map("jungle-tilemap", 2, 32);
             map->loadMap("./assets/tilemaps/jungle.map", 25, 20);
 
-            Entity& tank(manager.addEntity("tank"));
-            tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 32.0f, 32.0f, 1.0f);
-            tank.addComponent<SpriteComponent>("tank-img");
- 
-            Entity& chopper(manager.addEntity("chopper"));
+            Entity& chopper(manager.addEntity("chopper", PLAYER_LAYER));
             chopper.addComponent<TransformComponent>(0.0f, 0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             chopper.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
             chopper.addComponent<PlayerInputComponent>(50, "w", "s", "a", "d", "space");
 
-            Entity& radar = manager.addEntity("radar");
+            Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
+            tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 32.0f, 32.0f, 1.0f);
+            tank.addComponent<SpriteComponent>("tank-img");
+
+            Entity& radar = manager.addEntity("radar", UI_LAYER);
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);
             radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
 
