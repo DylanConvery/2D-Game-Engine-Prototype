@@ -30,10 +30,10 @@ SpriteComponent::SpriteComponent(std::string animation_id, unsigned frames, unsi
 }
 
 //sets our member variables to the appropriate values for the specified animation
-void SpriteComponent::play(std::string animation){
-     _frames = _animations[animation]._frames;
-     _index = _animations[animation]._index;
-     _speed = _animations[animation]._speed;
+void SpriteComponent::play(std::string animation) {
+    _frames = _animations[animation]._frames;
+    _index = _animations[animation]._index;
+    _speed = _animations[animation]._speed;
     _animation = animation;
 }
 
@@ -45,7 +45,7 @@ void SpriteComponent::setTexture(std::string asset_texture_id) {
 void SpriteComponent::initialize() {
     _transform = _entity->getComponent<TransformComponent>();
     //make sure we get transform component to work with
-    if(_transform != nullptr){
+    if (_transform != nullptr) {
         _source_rectangle.x = 0;
         _source_rectangle.y = 0;
         _source_rectangle.w = static_cast<int>(_transform->_width);
@@ -55,15 +55,20 @@ void SpriteComponent::initialize() {
 
 void SpriteComponent::update(float delta_time) {
     //make sure we have a transform component to work with
-    if(_transform != nullptr){
+    if (_transform != nullptr) {
         //move our source retangle back and forth horizontally across our sprite sheet every (SDL_ticks / speed) % frames
-        if(_animated){
+        if (_animated) {
             _source_rectangle.x = _source_rectangle.w * static_cast<int>((SDL_GetTicks() / _speed) % _frames);
         }
         //move our source rectangle up and down
         _source_rectangle.y = _index * _transform->_height;
-        _destination_rect.x = static_cast<int>(_transform->_position.x);
-        _destination_rect.y = static_cast<int>(_transform->_position.y);
+        if (_fixed) {
+            _destination_rect.x = static_cast<int>(_transform->_position.x);
+            _destination_rect.y = static_cast<int>(_transform->_position.y);
+        } else {
+            _destination_rect.x = static_cast<int>(_transform->_position.x) - Engine::_camera.x;
+            _destination_rect.y = static_cast<int>(_transform->_position.y) - Engine::_camera.y;
+        }
         _destination_rect.w = static_cast<int>(_transform->_width * _transform->_scale);
         _destination_rect.h = static_cast<int>(_transform->_height * _transform->_scale);
     }

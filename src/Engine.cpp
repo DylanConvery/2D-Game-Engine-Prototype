@@ -2,16 +2,14 @@
 
 // TODO: bad global variables
 EntityManager manager;
-AssetManager* Engine::_asset_manager;
-SDL_Renderer* Engine::_renderer;
+AssetManager* Engine::_asset_manager = new AssetManager(&manager);
+SDL_Renderer* Engine::_renderer = nullptr;
 SDL_Event Engine::_event;
+SDL_Rect Engine::_camera{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 Map* map;
 
 // initializes our member variables
-Engine::Engine() : _loop(false), _window(nullptr), ticks_last_frame(0) {
-    _renderer = nullptr;
-    _asset_manager = new AssetManager(&manager);
-}
+Engine::Engine() : _loop(false), _window(nullptr), _ticks_last_frame(0) {}
 
 Engine::~Engine() {}
 
@@ -57,6 +55,7 @@ bool Engine::init(int width, int height) {
     return _loop;
 }
 
+Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
 // TODO: remove this
 void Engine::loadLevel(int level) {
     switch (level) {
@@ -68,14 +67,14 @@ void Engine::loadLevel(int level) {
 
             map = new Map("jungle-tilemap", 2, 32);
             map->loadMap("./assets/tilemaps/jungle.map", 25, 20);
+            //800,640
 
-            Entity& chopper(manager.addEntity("chopper", PLAYER_LAYER));
-            chopper.addComponent<TransformComponent>(0.0f, 0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
-            chopper.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
-            chopper.addComponent<PlayerInputComponent>(50, "w", "s", "a", "d", "space");
+            player.addComponent<TransformComponent>(240.0f, 106.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
+            player.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
+            player.addComponent<PlayerInputComponent>(200, "w", "s", "a", "d", "space");
 
             Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
-            tank.addComponent<TransformComponent>(0.0f, 0.0f, 20.0f, 20.0f, 32.0f, 32.0f, 1.0f);
+            tank.addComponent<TransformComponent>(150.0f, 495.0f, 5.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             tank.addComponent<SpriteComponent>("tank-img");
 
             Entity& radar = manager.addEntity("radar", UI_LAYER);
@@ -111,7 +110,7 @@ void Engine::processInput() {
 // updates the state of our application
 void Engine::update() {
     // delay until we reach our target time in milliseconds
-    uint32_t delay = FRAME_TIME - (SDL_GetTicks() - ticks_last_frame);
+    uint32_t delay = FRAME_TIME - (SDL_GetTicks() - _ticks_last_frame);
 
     // if it took 1ms to render the last frame and our target is to render
     // a frame every 16.6ms, 16.6 - 1 = 15.6ms, that means we must wait
@@ -126,7 +125,7 @@ void Engine::update() {
 
     // delta time = difference in ticks from last frame converted to seconds
     // how much time has ellapsed since the last frame.
-    float delta_time = (SDL_GetTicks() - ticks_last_frame) / 1000.0f;
+    float delta_time = (SDL_GetTicks() - _ticks_last_frame) / 1000.0f;
 
     // clamp deltatime to maximum value. This is so if we are debugging,
     // our delta time can become huge between steps. This can also happen
@@ -134,9 +133,34 @@ void Engine::update() {
     delta_time = (delta_time > 0.05f) ? 0.05f : delta_time;
 
     // sets the new ticks for the current frame to be used in the next pass
-    ticks_last_frame = SDL_GetTicks();
+    _ticks_last_frame = SDL_GetTicks();
 
     manager.update(delta_time);
+
+    cameraMovement();
+}
+
+void Engine::cameraMovement() {
+    TransformComponent* player_position = player.getComponent<TransformComponent>();
+
+    _camera.x = player_position->_position.x - (WINDOW_WIDTH / 2);
+    _camera.y = player_position->_position.y - (WINDOW_HEIGHT / 2);
+
+    if (_camera.x < 0) {
+        _camera.x = 0;
+    }
+
+    if (_camera.y < 0) {
+        _camera.y = 0;
+    }
+
+    if(_camera.x > _camera.w){
+        _camera.x = _camera.w;
+    }
+
+    if(_camera.y > _camera.h){
+        _camera.y = _camera.h;
+    }
 }
 
 // renders the state of our application, shows our entities

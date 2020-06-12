@@ -31,11 +31,13 @@ class Engine {
     void destroy();
     bool loop() const;
     void loadLevel(int level);
+    void cameraMovement();
 
     static SDL_Renderer* _renderer;
     static AssetManager* _asset_manager;
     static SDL_Event _event;
-    uint32_t ticks_last_frame;
+    static SDL_Rect _camera;
+    uint32_t _ticks_last_frame;
 
    private:
     SDL_Window* _window;

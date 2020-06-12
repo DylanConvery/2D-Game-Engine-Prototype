@@ -79,19 +79,21 @@ void PlayerInputComponent::update(float delta_time) {
         }
     }
 
-	boundingBoxCheck();
+    boundingBoxCheck();
 }
 
 //makes sure we don't go outside the bounds of the screen
-void PlayerInputComponent::boundingBoxCheck(){
-	if (_transform->_position.y <= 0) {
+//TODO: the * 2 is hardcoded to reflect the map size. Need
+//a way to scale the bounding box depending on the map size
+void PlayerInputComponent::boundingBoxCheck() {
+    if (_transform->_position.y <= 0) {
         _transform->_position.y = 0;
         if (_transform->_velocity.y < 0) {
             _transform->_velocity.y = 0;
         }
     }
-    if (_transform->_position.y + _transform->_height >= WINDOW_HEIGHT) {
-        _transform->_position.y = WINDOW_HEIGHT - _transform->_height;
+    if (_transform->_position.y + _transform->_height >= WINDOW_HEIGHT * 2) {
+        _transform->_position.y = (WINDOW_HEIGHT * 2) - _transform->_height;
         if (_transform->_velocity.y > 0) {
             _transform->_velocity.y = 0;
         }
@@ -102,8 +104,8 @@ void PlayerInputComponent::boundingBoxCheck(){
             _transform->_velocity.x = 0;
         }
     }
-    if (_transform->_position.x + _transform->_width >= WINDOW_WIDTH) {
-        _transform->_position.x = WINDOW_WIDTH - _transform->_width;
+    if (_transform->_position.x + _transform->_width >= WINDOW_WIDTH * 2) {
+        _transform->_position.x = (WINDOW_WIDTH * 2) - _transform->_width;
         if (_transform->_velocity.x > 0) {
             _transform->_velocity.x = 0;
         }
