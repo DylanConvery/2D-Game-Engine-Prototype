@@ -5,6 +5,8 @@
 #include <vector>
 
 #include "Entity.hpp"
+#include "Collision.hpp"
+#include "Components/ColliderComponent.hpp"
 
 class EntityManager {
    public:
@@ -13,6 +15,7 @@ class EntityManager {
     bool empty();
     Entity& addEntity(std::string entity_name, layers layer);
     void listEntities() const;
+    std::string entityCollisions(Entity& entity) const;
     std::vector<Entity*> getEntities() const;
     std::vector<Entity*> getEntitiesByLayer(layers layer) const;
     unsigned int size() const;

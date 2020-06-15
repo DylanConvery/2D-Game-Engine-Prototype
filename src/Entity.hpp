@@ -49,12 +49,7 @@ class Entity {
     //returns true if our entity has a specific component or false otherwise
     template <typename T>
     bool hasComponent() const {
-        for (auto element : _component_type_map) {
-            if (element.first->name() == typeid(T).name()) {
-                return true;
-            }
-        }
-        return false;
+        return _component_type_map.count(&typeid(T));
     }
 
     std::string _entity_name;
