@@ -18,6 +18,12 @@ void EntityManager::render() {
     }
 }
 
+std::string EntityManager::entityCollisions(Entity& entity) const {
+    for(auto i : _entities){
+        
+    }
+}
+
 //checks to see if we have any entites
 bool EntityManager::empty() { return _entities.empty(); }
 

@@ -4,10 +4,12 @@
 #include "../Collision.hpp"
 #include "../EntityManager.hpp"
 #include "TransformComponent.hpp"
+#include "../Engine.hpp"
 
 class ColliderComponent : public Component {
    public:
-    ColliderComponent();
+    ColliderComponent(std::string collider_tag,
+     int x, int y, int width, int height);
     void initialize() override;
     void update(float delta_time) override;
     void render() override;

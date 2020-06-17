@@ -137,10 +137,11 @@ void Engine::update() {
 
     manager.update(delta_time);
 
-    cameraMovement();
+    camera();
+    collisions();
 }
 
-void Engine::cameraMovement() {
+void Engine::camera() {
     TransformComponent* player_position = player.getComponent<TransformComponent>();
 
     _camera.x = player_position->_position.x - ((WINDOW_WIDTH / 2) - (player_position->_width / 2));
@@ -160,6 +161,13 @@ void Engine::cameraMovement() {
 
     if(_camera.y > _camera.h){
         _camera.y = _camera.h;
+    }
+}
+
+void Engine::collisions(){
+    std::string tag = manager.entityCollisions(player);
+    if(tag.compare("enemy")){
+        _loop = false;
     }
 }
 

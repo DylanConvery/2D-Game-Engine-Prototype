@@ -32,6 +32,7 @@ class Engine {
     bool loop() const;
     void loadLevel(int level);
     void cameraMovement();
+    void collisions();
 
     static SDL_Renderer* _renderer;
     static AssetManager* _asset_manager;
