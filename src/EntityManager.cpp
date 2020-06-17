@@ -1,37 +1,39 @@
 #include "EntityManager.hpp"
 
+EntityManager::EntityManager() {
+#ifdef DEBUG
+    _colliders_visible = false;
+#endif  // DEBUG
+}
+
 //updates all our entities within our application
 void EntityManager::update(float delta_time) {
-#ifdef DEBUG
-    if (Engine::_event.type == SDL_KEYDOWN) {
-        if (Engine::_event.key.keysym.sym == SDLK_F1) {
-            if (!_pressed) {
-                _pressed = true;
-                for (auto i : _entities) {
-                    if (i->hasComponent<ColliderComponent>()) {
-                        ColliderComponent* collider = i->getComponent<ColliderComponent>();
-                        if (collider->_visible) {
-                            collider->hide();
-                        } else {
-                            collider->show();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    if (Engine::_event.type == SDL_KEYUP) {
-        if (Engine::_event.key.keysym.sym == SDLK_F1) {
-            _pressed = false;
-        }
-    }
-#endif  // DEBUG
-
     for (auto& entity : _entities) {
         entity->update(delta_time);
     }
 }
+
+#ifdef DEBUG
+void EntityManager::showColliders() {
+    _colliders_visible = true;
+    for (auto i : _entities) {
+        if (i->hasComponent<ColliderComponent>()) {
+            ColliderComponent* collider = i->getComponent<ColliderComponent>();
+            collider->show();
+        }
+    }
+}
+
+void EntityManager::hideColliders() {
+    _colliders_visible = false;
+    for (auto i : _entities) {
+        if (i->hasComponent<ColliderComponent>()) {
+            ColliderComponent* collider = i->getComponent<ColliderComponent>();
+            collider->hide();
+        }
+    }
+}
+#endif  // DEBUG
 
 //renders all our entities within our application
 //TODO: refactor this so it's not so slow. Looping all of our entities

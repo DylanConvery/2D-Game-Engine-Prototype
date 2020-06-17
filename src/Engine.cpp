@@ -9,7 +9,7 @@ SDL_Rect Engine::_camera{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 Map* map;
 
 // initializes our member variables
-Engine::Engine() : _loop(false), _window(nullptr), _ticks_last_frame(0) {}
+Engine::Engine() : _loop(false), _window(nullptr), _ticks_last_frame(0), _pressed(false) {}
 
 Engine::~Engine() {}
 
@@ -107,6 +107,23 @@ void Engine::processInput() {
                 _loop = false;
                 break;
             }
+#ifdef DEBUG
+            if (_event.key.keysym.sym == SDLK_F1) {
+                if (!_pressed) {
+                    _pressed = true;
+                    if (!manager._colliders_visible) {
+                        manager.showColliders();
+                    } else {
+                        manager.hideColliders();
+                    }
+                }
+                break;
+            }
+        case SDL_KEYUP:
+            if (_event.key.keysym.sym == SDLK_F1) {
+                _pressed = false;
+            }
+#endif  // DEBUG
         default:
             break;
     }

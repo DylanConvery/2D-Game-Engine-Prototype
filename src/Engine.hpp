@@ -40,7 +40,7 @@ class Engine {
     static SDL_Event _event;
     static SDL_Rect _camera;
     uint32_t _ticks_last_frame;
-
+	bool _pressed;
    private:
     SDL_Window* _window;
     bool _loop;

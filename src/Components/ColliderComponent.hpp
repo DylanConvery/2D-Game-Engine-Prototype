@@ -16,7 +16,6 @@ class ColliderComponent : public Component {
 #ifdef DEBUG
     void show();
     void hide();
-	
     bool _visible;
 #endif  // DEBUG
 

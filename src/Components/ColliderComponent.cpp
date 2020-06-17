@@ -41,7 +41,6 @@ void ColliderComponent::show(){
 void ColliderComponent::hide(){
 	_visible = false;
 }
-
 #endif  // DEBUG
 
 

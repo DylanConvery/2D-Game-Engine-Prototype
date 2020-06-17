@@ -11,20 +11,28 @@
 
 class EntityManager {
    public:
+    EntityManager();
     void update(float delta_time);
     void render();
     bool empty();
     Entity& addEntity(std::string entity_name, layers layer);
     void listEntities() const;
     std::string entityCollisions(Entity& entity) const;
+#ifdef DEBUG
+	void showColliders();
+	void hideColliders();
+#endif  // DEBUG
     std::vector<Entity*> getEntities() const;
     std::vector<Entity*> getEntitiesByLayer(layers layer) const;
     unsigned int size() const;
     void clear();
 
+#ifdef DEBUG
+	bool _colliders_visible;
+#endif  // DEBUG
+
    private:
     std::vector<Entity*> _entities;
-	bool _pressed;
 };
 
 #endif  // !ENTITYMANAGER_H
