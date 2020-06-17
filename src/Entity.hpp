@@ -16,7 +16,7 @@ class Component;
 class Entity {
    public:
     Entity(EntityManager& manager);
-    Entity(EntityManager& manager, std::string entity_name, layers layer);
+    Entity(EntityManager& manager, std::string entity_name, LAYERS layer);
     void update(float delta_time);
     void render();
     void destroy();
@@ -53,7 +53,7 @@ class Entity {
     }
 
     std::string _name;
-    layers _layer;
+    LAYERS _layer;
 
    private:
     EntityManager& _manager;

@@ -15,15 +15,15 @@ class EntityManager {
     void update(float delta_time);
     void render();
     bool empty();
-    Entity& addEntity(std::string entity_name, layers layer);
+    Entity& addEntity(std::string entity_name, LAYERS layer);
     void listEntities() const;
-    std::string entityCollisions(Entity& entity) const;
+    COLLISION_TYPE entityCollisions() const;
 #ifdef DEBUG
 	void showColliders();
 	void hideColliders();
 #endif  // DEBUG
     std::vector<Entity*> getEntities() const;
-    std::vector<Entity*> getEntitiesByLayer(layers layer) const;
+    std::vector<Entity*> getEntitiesByLayer(LAYERS layer) const;
     unsigned int size() const;
     void clear();
 

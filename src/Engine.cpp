@@ -75,12 +75,12 @@ void Engine::loadLevel(int level) {
             player.addComponent<TransformComponent>(240.0f, 106.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             player.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
             player.addComponent<PlayerInputComponent>(200, "w", "s", "a", "d", "space");
-            player.addComponent<ColliderComponent>("player");
+            player.addComponent<ColliderComponent>("PLAYER");
 
             Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
             tank.addComponent<TransformComponent>(150.0f, 495.0f, 5.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             tank.addComponent<SpriteComponent>("tank-img");
-            tank.addComponent<ColliderComponent>("enemy");
+            tank.addComponent<ColliderComponent>("ENEMY");
 
             Entity& radar = manager.addEntity("radar", UI_LAYER);
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);
@@ -187,9 +187,9 @@ void Engine::camera() {
 }
 
 void Engine::collisions() {
-    std::string tag = manager.entityCollisions(player);
-    if (tag.compare("enemy") == 0) {
-        _loop = false;
+    COLLISION_TYPE collision = manager.entityCollisions();
+    if (collision == PLAYER_ENEMY_COLLISION) {
+        std::cout << "player enemy collision\n";
     }
 }
 

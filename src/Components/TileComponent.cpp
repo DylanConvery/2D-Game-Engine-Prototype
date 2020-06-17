@@ -32,4 +32,6 @@ void TileComponent::update(float delta_time) {
 }
 void TileComponent::render() {
     TextureManager::draw(_texture, _source, _destination, SDL_FLIP_NONE);
+	SDL_SetRenderDrawColor( Engine::_renderer, 0, 255, 0, 100 );
+	SDL_RenderDrawRect(Engine::_renderer, &_destination);
 }

@@ -40,7 +40,7 @@ void EntityManager::hideColliders() {
 //multiple times a second is slow
 void EntityManager::render() {
     for (int layer = 0; layer < NUM_LAYERS; layer++) {
-        for (auto& entity : getEntitiesByLayer(static_cast<layers>(layer))) {
+        for (auto& entity : getEntitiesByLayer(static_cast<LAYERS>(layer))) {
             entity->render();
         }
     }
@@ -50,7 +50,7 @@ void EntityManager::render() {
 bool EntityManager::empty() { return _entities.empty(); }
 
 //creates a new entity
-Entity& EntityManager::addEntity(std::string entity_name, layers layer) {
+Entity& EntityManager::addEntity(std::string entity_name, LAYERS layer) {
     Entity* entity = new Entity(*this, entity_name, layer);
     _entities.emplace_back(entity);
     return *entity;
@@ -60,7 +60,7 @@ Entity& EntityManager::addEntity(std::string entity_name, layers layer) {
 std::vector<Entity*> EntityManager::getEntities() const { return _entities; }
 
 //finds all entities of a particular layer and returns them
-std::vector<Entity*> EntityManager::getEntitiesByLayer(layers layer) const {
+std::vector<Entity*> EntityManager::getEntitiesByLayer(LAYERS layer) const {
     std::vector<Entity*> entities;
     for (auto& i : _entities) {
         if (i->_layer == layer) {
@@ -88,21 +88,46 @@ void EntityManager::listEntities() const {
     }
 }
 
-std::string EntityManager::entityCollisions(Entity& entity) const {
-    ColliderComponent* collider_a = entity.getComponent<ColliderComponent>();
-    if (collider_a != nullptr) {
-        for (auto i : _entities) {
-            if (i->_name.compare(entity._name) != 0 && i->_name.compare("Tile") != 0) {
-                if (i->hasComponent<ColliderComponent>()) {
-                    ColliderComponent* collider_b = i->getComponent<ColliderComponent>();
-                    if (collider_b != nullptr) {
+//tests all entites to see if there are any collisions.
+COLLISION_TYPE EntityManager::entityCollisions() const {
+    for (auto& entity_a : _entities) {
+        if (entity_a->hasComponent<ColliderComponent>()) {
+            ColliderComponent* collider_a = entity_a->getComponent<ColliderComponent>();
+            for (auto& entity_b : _entities) {
+                if (entity_a->_name.compare(entity_b->_name) != 0) {
+                    if (entity_b->hasComponent<ColliderComponent>()) {
+                        ColliderComponent* collider_b = entity_b->getComponent<ColliderComponent>();
                         if (Collision::checkCollision(collider_a->_collider, collider_b->_collider)) {
-                            return collider_b->_collider_tag;
+                            //player enemy collision
+                            if (collider_a->_collider_tag.compare("PLAYER") == 0 &&
+                                collider_b->_collider_tag.compare("ENEMY") == 0) {
+                                return PLAYER_ENEMY_COLLISION;
+                            }
+
+                            if (collider_a->_collider_tag.compare("PLAYER") == 0 &&
+                                collider_b->_collider_tag.compare("PROJECTILE") == 0) {
+                                return PLAYER_PROJECTILE_COLLSION;
+                            }
+
+                            if (collider_a->_collider_tag.compare("PLAYER") == 0 &&
+                                collider_b->_collider_tag.compare("VEGETATION") == 0) {
+                                return PLAYER_VEGETATION_COLLISION;
+                            }
+
+                            if (collider_a->_collider_tag.compare("ENEMY") == 0 &&
+                                collider_b->_collider_tag.compare("PROJECTILE") == 0) {
+                                return ENEMY_PROJECTILE_COLLISION;
+                            }
+
+                            if (collider_a->_collider_tag.compare("PLAYER") == 0 &&
+                                collider_b->_collider_tag.compare("TARGET") == 0) {
+                                return TARGET_COLLISION;
+                            }
                         }
                     }
                 }
             }
         }
     }
-    return std::string();
+    return NO_COLLISION;
 }

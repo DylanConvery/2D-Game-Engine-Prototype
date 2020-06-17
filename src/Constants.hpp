@@ -9,7 +9,17 @@ const unsigned WINDOW_HEIGHT = 640;
 const unsigned FRAME_RATE = 60; 
 const unsigned FRAME_TIME = 1000 / FRAME_RATE;
 
-enum layers{
+//TODO: replace with enum classes
+enum COLLISION_TYPE{
+	NO_COLLISION,
+	PLAYER_ENEMY_COLLISION,
+	PLAYER_VEGETATION_COLLISION,
+	PLAYER_PROJECTILE_COLLSION,
+	ENEMY_PROJECTILE_COLLISION,
+	TARGET_COLLISION
+};
+
+enum LAYERS{
 	TILEMAP_LAYER,
 	VEGETATION_LAYER,
 	ENEMY_LAYER,
@@ -20,4 +30,4 @@ enum layers{
 
 const unsigned NUM_LAYERS = 6;
 
-#endif // !CONSTANTS_H#define CONSTANTS_H
+#endif // !CONSTANTS_H
