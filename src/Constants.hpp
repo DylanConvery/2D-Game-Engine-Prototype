@@ -6,7 +6,7 @@ const unsigned WINDOW_WIDTH = 800;
 const unsigned WINDOW_HEIGHT = 640;
 
 //16.6 milliseconds
-const unsigned FRAME_RATE = 60; 
+const unsigned FRAME_RATE = 120; 
 const unsigned FRAME_TIME = 1000 / FRAME_RATE;
 
 //TODO: replace with enum classes

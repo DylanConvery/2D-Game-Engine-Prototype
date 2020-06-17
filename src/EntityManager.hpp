@@ -21,6 +21,8 @@ class EntityManager {
 #ifdef DEBUG
 	void showColliders();
 	void hideColliders();
+	void showTileMap();
+	void hideTileMap();
 #endif  // DEBUG
     std::vector<Entity*> getEntities() const;
     std::vector<Entity*> getEntitiesByLayer(LAYERS layer) const;
@@ -29,6 +31,7 @@ class EntityManager {
 
 #ifdef DEBUG
 	bool _colliders_visible;
+	bool _tile_map_visible;
 #endif  // DEBUG
 
    private:

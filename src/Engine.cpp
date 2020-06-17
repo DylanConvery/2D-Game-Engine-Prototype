@@ -9,7 +9,11 @@ SDL_Rect Engine::_camera{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 Map* map;
 
 // initializes our member variables
-Engine::Engine() : _loop(false), _window(nullptr), _ticks_last_frame(0), _pressed(false) {}
+Engine::Engine() : _loop(false), _window(nullptr), _ticks_last_frame(0) {
+#ifdef DEBUG
+    _pressed = false;
+#endif  // DEBUG
+}
 
 Engine::~Engine() {}
 
@@ -115,6 +119,12 @@ void Engine::processInput() {
                         manager.showColliders();
                     } else {
                         manager.hideColliders();
+                    }
+
+                    if (!manager._tile_map_visible) {
+                        manager.showTileMap();
+                    } else {
+                        manager.hideTileMap();
                     }
                 }
                 break;

@@ -34,20 +34,21 @@ void ColliderComponent::update(float delta_time) {
 }
 
 #ifdef DEBUG
-void ColliderComponent::show(){
-	_visible = true;
+void ColliderComponent::show() {
+    _visible = true;
 }
 
-void ColliderComponent::hide(){
-	_visible = false;
+void ColliderComponent::hide() {
+    _visible = false;
 }
 #endif  // DEBUG
 
-
 void ColliderComponent::render() {
 #ifdef DEBUG
-    if (_visible) {
-        TextureManager::draw(_texture, _source, _destination, SDL_FLIP_NONE);
+    if (_transform != nullptr) {
+        if (_visible) {
+            TextureManager::draw(_texture, _source, _destination, SDL_FLIP_NONE);
+        }
     }
 #endif  // DEBUG
 }

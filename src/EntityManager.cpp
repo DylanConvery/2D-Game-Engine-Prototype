@@ -3,6 +3,7 @@
 EntityManager::EntityManager() {
 #ifdef DEBUG
     _colliders_visible = false;
+	_tile_map_visible = false;
 #endif  // DEBUG
 }
 
@@ -32,6 +33,26 @@ void EntityManager::hideColliders() {
             collider->hide();
         }
     }
+}
+
+void EntityManager::showTileMap() {
+	_tile_map_visible = true;
+	for(auto i : _entities){
+		if(i->hasComponent<TileComponent>()){
+			TileComponent* tile = i->getComponent<TileComponent>();
+			tile->showTileContainer();
+		}
+	}
+}
+
+void EntityManager::hideTileMap() {
+	_tile_map_visible = false;
+	for(auto i : _entities){
+		if(i->hasComponent<TileComponent>()){
+			TileComponent* tile = i->getComponent<TileComponent>();
+			tile->hideTileContainer();
+		}
+	}
 }
 #endif  // DEBUG
 

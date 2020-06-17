@@ -15,11 +15,19 @@ class TileComponent : public Component{
 		void update(float delta_time) override;
 		void render() override;
 
+#ifdef DEBUG
+		void showTileContainer();
+		void hideTileContainer();
+#endif // DEBUG
+		
 		SDL_Texture* _texture;
 		SDL_Rect _source;
 		SDL_Rect _destination;
 		glm::vec2 _position;
 	private:
+	#ifdef DEBUG
+		bool _tile_container_visible;
+	#endif // DEBUG
 };
 
 #endif // !TILECOMPONENT_H

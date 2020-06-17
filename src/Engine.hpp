@@ -1,5 +1,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
+
 #define DEBUG
 
 #include <SDL2/SDL.h>
@@ -40,9 +41,12 @@ class Engine {
     static SDL_Event _event;
     static SDL_Rect _camera;
     uint32_t _ticks_last_frame;
-	bool _pressed;
+
    private:
     SDL_Window* _window;
     bool _loop;
+#ifdef DEBUG
+	bool _pressed;
+#endif // DEBUG
 };
 #endif  // !ENGINE_H

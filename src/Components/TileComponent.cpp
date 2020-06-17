@@ -22,16 +22,38 @@ TileComponent::TileComponent(
 
     _position.x = destination_x;
     _position.y = destination_y;
+
+#ifdef DEBUG
+    _tile_container_visible = false;
+#endif  // DEBUG
 }
+
 TileComponent::~TileComponent() {
     SDL_DestroyTexture(_texture);
 }
+
 void TileComponent::update(float delta_time) {
     _destination.x = _position.x - Engine::_camera.x;
     _destination.y = _position.y - Engine::_camera.y;
 }
+
 void TileComponent::render() {
     TextureManager::draw(_texture, _source, _destination, SDL_FLIP_NONE);
-	SDL_SetRenderDrawColor( Engine::_renderer, 0, 255, 0, 100 );
-	SDL_RenderDrawRect(Engine::_renderer, &_destination);
+#ifdef DEBUG
+    if (_tile_container_visible) {
+		SDL_SetRenderDrawBlendMode(Engine::_renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(Engine::_renderer, 0, 255, 0, 100);
+        SDL_RenderDrawRect(Engine::_renderer, &_destination);
+    }
+#endif  // DEBUG
 }
+
+#ifdef DEBUG
+void TileComponent::showTileContainer() {
+    _tile_container_visible = true;
+}
+
+void TileComponent::hideTileContainer() {
+    _tile_container_visible = false;
+}
+#endif  // DEBUG
