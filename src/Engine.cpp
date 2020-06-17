@@ -143,8 +143,8 @@ void Engine::update() {
 void Engine::cameraMovement() {
     TransformComponent* player_position = player.getComponent<TransformComponent>();
 
-    _camera.x = player_position->_position.x - (WINDOW_WIDTH / 2);
-    _camera.y = player_position->_position.y - (WINDOW_HEIGHT / 2);
+    _camera.x = player_position->_position.x - ((WINDOW_WIDTH / 2) - (player_position->_width / 2));
+    _camera.y = player_position->_position.y - ((WINDOW_HEIGHT / 2) - (player_position->_height / 2));
 
     if (_camera.x < 0) {
         _camera.x = 0;
