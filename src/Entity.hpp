@@ -39,7 +39,7 @@ class Entity {
     T* getComponent() {
         auto element = _component_type_map.find(&typeid(T));
         if(element == _component_type_map.end()){
-            std::cerr << "[ERROR] " << _entity_name << "<" << typeid(T).name() <<"> Component not found\n";
+            std::cerr << "[ERROR] " << _name << "<" << typeid(T).name() <<"> Component not found\n";
             return nullptr;
         } else {
             return static_cast<T*>(element->second);
@@ -52,7 +52,7 @@ class Entity {
         return _component_type_map.count(&typeid(T));
     }
 
-    std::string _entity_name;
+    std::string _name;
     layers _layer;
 
    private:

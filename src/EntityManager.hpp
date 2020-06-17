@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Entity.hpp"
+#include "Component.hpp"
 #include "Collision.hpp"
 #include "Components/ColliderComponent.hpp"
 
@@ -23,6 +24,7 @@ class EntityManager {
 
    private:
     std::vector<Entity*> _entities;
+	bool _pressed;
 };
 
 #endif  // !ENTITYMANAGER_H

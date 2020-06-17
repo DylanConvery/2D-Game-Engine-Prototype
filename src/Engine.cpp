@@ -56,7 +56,7 @@ bool Engine::init(int width, int height) {
 }
 
 Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
-// TODO: remove this
+
 void Engine::loadLevel(int level) {
     switch (level) {
         case 0: {
@@ -65,17 +65,22 @@ void Engine::loadLevel(int level) {
             _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
             _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
 
+#ifdef DEBUG
+            _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
+#endif  // DEBUG
+
             map = new Map("jungle-tilemap", 2, 32);
             map->loadMap("./assets/tilemaps/jungle.map", 25, 20);
-            //800,640
 
             player.addComponent<TransformComponent>(240.0f, 106.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             player.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
             player.addComponent<PlayerInputComponent>(200, "w", "s", "a", "d", "space");
+            player.addComponent<ColliderComponent>("player");
 
             Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
             tank.addComponent<TransformComponent>(150.0f, 495.0f, 5.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             tank.addComponent<SpriteComponent>("tank-img");
+            tank.addComponent<ColliderComponent>("enemy");
 
             Entity& radar = manager.addEntity("radar", UI_LAYER);
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);
@@ -155,18 +160,18 @@ void Engine::camera() {
         _camera.y = 0;
     }
 
-    if(_camera.x > _camera.w){
+    if (_camera.x > _camera.w) {
         _camera.x = _camera.w;
     }
 
-    if(_camera.y > _camera.h){
+    if (_camera.y > _camera.h) {
         _camera.y = _camera.h;
     }
 }
 
-void Engine::collisions(){
+void Engine::collisions() {
     std::string tag = manager.entityCollisions(player);
-    if(tag.compare("enemy")){
+    if (tag.compare("enemy") == 0) {
         _loop = false;
     }
 }

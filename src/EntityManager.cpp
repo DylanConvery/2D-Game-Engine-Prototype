@@ -2,6 +2,32 @@
 
 //updates all our entities within our application
 void EntityManager::update(float delta_time) {
+#ifdef DEBUG
+    if (Engine::_event.type == SDL_KEYDOWN) {
+        if (Engine::_event.key.keysym.sym == SDLK_F1) {
+            if (!_pressed) {
+                _pressed = true;
+                for (auto i : _entities) {
+                    if (i->hasComponent<ColliderComponent>()) {
+                        ColliderComponent* collider = i->getComponent<ColliderComponent>();
+                        if (collider->_visible) {
+                            collider->hide();
+                        } else {
+                            collider->show();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (Engine::_event.type == SDL_KEYUP) {
+        if (Engine::_event.key.keysym.sym == SDLK_F1) {
+            _pressed = false;
+        }
+    }
+#endif  // DEBUG
+
     for (auto& entity : _entities) {
         entity->update(delta_time);
     }
@@ -12,15 +38,9 @@ void EntityManager::update(float delta_time) {
 //multiple times a second is slow
 void EntityManager::render() {
     for (int layer = 0; layer < NUM_LAYERS; layer++) {
-        for(auto& entity : getEntitiesByLayer(static_cast<layers>(layer))){
+        for (auto& entity : getEntitiesByLayer(static_cast<layers>(layer))) {
             entity->render();
         }
-    }
-}
-
-std::string EntityManager::entityCollisions(Entity& entity) const {
-    for(auto i : _entities){
-        
     }
 }
 
@@ -30,7 +50,7 @@ bool EntityManager::empty() { return _entities.empty(); }
 //creates a new entity
 Entity& EntityManager::addEntity(std::string entity_name, layers layer) {
     Entity* entity = new Entity(*this, entity_name, layer);
-    _entities.emplace_back(entity); 
+    _entities.emplace_back(entity);
     return *entity;
 }
 
@@ -42,7 +62,7 @@ std::vector<Entity*> EntityManager::getEntitiesByLayer(layers layer) const {
     std::vector<Entity*> entities;
     for (auto& i : _entities) {
         if (i->_layer == layer) {
-            entities.emplace_back(i); 
+            entities.emplace_back(i);
         }
     }
     return entities;
@@ -61,7 +81,26 @@ void EntityManager::clear() {
 //prints all entities we manage
 void EntityManager::listEntities() const {
     for (auto& entity : _entities) {
-        std::cout << "Entity Name: " << entity->_entity_name << "\n";
+        std::cout << "Entity Name: " << entity->_name << "\n";
         entity->listComponents();
     }
+}
+
+std::string EntityManager::entityCollisions(Entity& entity) const {
+    ColliderComponent* collider_a = entity.getComponent<ColliderComponent>();
+    if (collider_a != nullptr) {
+        for (auto i : _entities) {
+            if (i->_name.compare(entity._name) != 0 && i->_name.compare("Tile") != 0) {
+                if (i->hasComponent<ColliderComponent>()) {
+                    ColliderComponent* collider_b = i->getComponent<ColliderComponent>();
+                    if (collider_b != nullptr) {
+                        if (Collision::checkCollision(collider_a->_collider, collider_b->_collider)) {
+                            return collider_b->_collider_tag;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return std::string();
 }

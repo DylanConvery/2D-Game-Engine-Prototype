@@ -1,5 +1,6 @@
 #ifndef ENGINE_H
 #define ENGINE_H
+#define DEBUG
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
