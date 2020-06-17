@@ -31,7 +31,7 @@ class Engine {
     void destroy();
     bool loop() const;
     void loadLevel(int level);
-    void cameraMovement();
+    void camera();
     void collisions();
 
     static SDL_Renderer* _renderer;
