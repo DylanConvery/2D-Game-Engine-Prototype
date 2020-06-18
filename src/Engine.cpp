@@ -84,6 +84,7 @@ void Engine::loadLevel(int level) {
             _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
             _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
             _asset_manager->addTexture("helipad-img", "./assets/images/heliport.png");
+			_asset_manager->addFont("charriot", "./assets/fonts/charriot.ttf", 16);
 
 #ifdef DEBUG
             _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
@@ -110,6 +111,9 @@ void Engine::loadLevel(int level) {
             Entity& radar = manager.addEntity("radar", UI_LAYER);
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);
             radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
+
+			Entity& label = manager.addEntity("label_1", UI_LAYER);
+			label.addComponent<LabelComponent>(10,10, "Level 1", "charriot", SDL_Color{255,255,255,255});
 
             manager.listEntities();
             break;
@@ -268,5 +272,7 @@ void Engine::destroy() {
     _window = nullptr;
 
     // quit sdl and subsystems
+	IMG_Quit();
+	TTF_Quit();
     SDL_Quit();
 }

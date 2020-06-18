@@ -15,8 +15,8 @@ void AssetManager::addTexture(std::string textureID, std::string path) {
     _textures.emplace(textureID, TextureManager::loadTexture(path));
 }
 
-void AssetManager::addFont(std::string fontID, std::string path) {
-	_fonts.emplace(fontID, FontManager::loadFont(path));
+void AssetManager::addFont(std::string fontID, std::string path, int font_size) {
+	_fonts.emplace(fontID, FontManager::loadFont(path, font_size));
 }
 
 //returns a pointer to a texture with matching textureID

@@ -15,6 +15,7 @@
 #include "Components/TransformComponent.hpp"
 #include "Components/PlayerInputComponent.hpp"
 #include "Components/TileComponent.hpp"
+#include "Components/LabelComponent.hpp"
 #include "Map.hpp"
 #include "Constants.hpp"
 #include "Entity.hpp"

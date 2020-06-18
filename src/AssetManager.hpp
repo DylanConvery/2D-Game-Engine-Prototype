@@ -15,14 +15,14 @@ class AssetManager {
     ~AssetManager();
     void clear();
     void addTexture(std::string textureID, std::string path);
-	void addFont(std::string fontID, std::string path);
+	void addFont(std::string fontID, std::string path, int font_size);
     SDL_Texture* getTexture(std::string textureID);
 	TTF_Font* getFont(std::string fontID);
+
    private:
     EntityManager* _manager;
     std::map<std::string, SDL_Texture*> _textures;
     std::map<std::string, TTF_Font*> _fonts;
-
 };
 
 #endif  // !ASSETMANAGER_H
