@@ -52,6 +52,21 @@ bool Engine::init(int width, int height) {
         std::cout << "[SUCCESS] SDL renderer created successfully!\n";
     }
 
+	// initialize PNG loading
+    if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG) {
+        std::cerr << "[ERROR] SDL_Image could not be initialized! SDL_Image Error: " << IMG_GetError() << "\n";
+        return false;
+    } else {
+        std::cout << "[SUCCESS] SDL_Image initialized successfully!\n";
+    }
+
+	if (TTF_Init() < 0) {
+        std::cerr << "[ERROR] SDL_ttf could not be initialized! SDL_ttf Error: " << TTF_GetError() << "\n";
+        return false;
+    } else {
+        std::cout << "[SUCCESS] SDL_ttf initialized successfully!\n";
+    }
+
     loadLevel(0);
 
     // game is now running
@@ -68,6 +83,7 @@ void Engine::loadLevel(int level) {
             _asset_manager->addTexture("chopper-spritesheet", "./assets/images/chopper-spritesheet.png");
             _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
             _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
+            _asset_manager->addTexture("helipad-img", "./assets/images/heliport.png");
 
 #ifdef DEBUG
             _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
@@ -85,6 +101,11 @@ void Engine::loadLevel(int level) {
             tank.addComponent<TransformComponent>(150.0f, 495.0f, 5.0f, 0.0f, 32.0f, 32.0f, 1.0f);
             tank.addComponent<SpriteComponent>("tank-img");
             tank.addComponent<ColliderComponent>("ENEMY");
+
+			Entity& helipad(manager.addEntity("helipad", OBSTACLE_LAYER));
+			helipad.addComponent<TransformComponent>(470, 420, 0, 0, 32, 32, 1);
+			helipad.addComponent<SpriteComponent>("helipad-img");
+			helipad.addComponent<ColliderComponent>("TARGET");
 
             Entity& radar = manager.addEntity("radar", UI_LAYER);
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);
@@ -199,8 +220,21 @@ void Engine::camera() {
 void Engine::collisions() {
     COLLISION_TYPE collision = manager.entityCollisions();
     if (collision == PLAYER_ENEMY_COLLISION) {
-        std::cout << "player enemy collision\n";
+		gameOver();
     }
+	if(collision == TARGET_COLLISION){
+		nextLevel(1);
+	}
+}
+
+void Engine::nextLevel(int level){
+	std::cout << "Loading next level\n";
+	_loop = false;
+}
+
+void Engine::gameOver(){
+	std::cout << "Game Over\n";
+	_loop = false;
 }
 
 // renders the state of our application, shows our entities

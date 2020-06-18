@@ -35,6 +35,8 @@ class Engine {
     void loadLevel(int level);
     void camera();
     void collisions();
+	void nextLevel(int level);
+	void gameOver();
 
     static SDL_Renderer* _renderer;
     static AssetManager* _asset_manager;

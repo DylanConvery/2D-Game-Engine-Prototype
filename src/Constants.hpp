@@ -25,9 +25,10 @@ enum LAYERS{
 	ENEMY_LAYER,
 	PLAYER_LAYER,
 	PROJECTILE_LAYER,
+	OBSTACLE_LAYER,
 	UI_LAYER
 };
 
-const unsigned NUM_LAYERS = 6;
+const unsigned NUM_LAYERS = 7;
 
 #endif // !CONSTANTS_H
