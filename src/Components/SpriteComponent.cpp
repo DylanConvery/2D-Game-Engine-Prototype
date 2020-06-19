@@ -48,8 +48,8 @@ void SpriteComponent::initialize() {
     if (_transform != nullptr) {
         _source_rectangle.x = 0;
         _source_rectangle.y = 0;
-        _source_rectangle.w = static_cast<int>(_transform->_width);
-        _source_rectangle.h = static_cast<int>(_transform->_height);
+        _source_rectangle.w = _transform->_width;
+        _source_rectangle.h = _transform->_height;
     }
 }
 
@@ -63,14 +63,14 @@ void SpriteComponent::update(float delta_time) {
         //move our source rectangle up and down
         _source_rectangle.y = _index * _transform->_height;
         if (_fixed) {
-            _destination_rect.x = static_cast<int>(_transform->_position.x);
-            _destination_rect.y = static_cast<int>(_transform->_position.y);
+            _destination_rect.x = _transform->_position.x;
+            _destination_rect.y = _transform->_position.y;
         } else {
-            _destination_rect.x = static_cast<int>(_transform->_position.x) - Engine::_camera.x;
-            _destination_rect.y = static_cast<int>(_transform->_position.y) - Engine::_camera.y;
+            _destination_rect.x = _transform->_position.x - Engine::_camera.x;
+            _destination_rect.y = _transform->_position.y - Engine::_camera.y;
         }
-        _destination_rect.w = static_cast<int>(_transform->_width * _transform->_scale);
-        _destination_rect.h = static_cast<int>(_transform->_height * _transform->_scale);
+        _destination_rect.w = _transform->_width * _transform->_scale;
+        _destination_rect.h =_transform->_height * _transform->_scale;
     }
 }
 

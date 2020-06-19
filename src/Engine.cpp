@@ -5,7 +5,7 @@ EntityManager manager;
 AssetManager* Engine::_asset_manager = new AssetManager(&manager);
 SDL_Renderer* Engine::_renderer = nullptr;
 SDL_Event Engine::_event;
-SDL_Rect Engine::_camera{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+SDL_FRect Engine::_camera{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 Map* map;
 
 // initializes our member variables
@@ -93,27 +93,27 @@ void Engine::loadLevel(int level) {
             map = new Map("jungle-tilemap", 2, 32);
             map->loadMap("./assets/tilemaps/jungle.map", 25, 20);
 
-            player.addComponent<TransformComponent>(240.0f, 106.0f, 0.0f, 0.0f, 32.0f, 32.0f, 1.0f);
+            player.addComponent<TransformComponent>(240.0f, 106.0f, 0.0f, 0.0f, 32, 32, 1);
             player.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
             player.addComponent<PlayerInputComponent>(200, "w", "s", "a", "d", "space");
             player.addComponent<ColliderComponent>("PLAYER");
 
             Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
-            tank.addComponent<TransformComponent>(150.0f, 495.0f, 5.0f, 0.0f, 32.0f, 32.0f, 1.0f);
+            tank.addComponent<TransformComponent>(150.0f, 495.0f, 5.0f, 0.0f, 32, 32, 1);
             tank.addComponent<SpriteComponent>("tank-img");
             tank.addComponent<ColliderComponent>("ENEMY");
 
 			Entity& helipad(manager.addEntity("helipad", OBSTACLE_LAYER));
-			helipad.addComponent<TransformComponent>(470, 420, 0, 0, 32, 32, 1);
+			helipad.addComponent<TransformComponent>(470.0f, 420.0f, 0.0f, 0.0f, 32, 32, 1);
 			helipad.addComponent<SpriteComponent>("helipad-img");
 			helipad.addComponent<ColliderComponent>("TARGET");
 
             Entity& radar = manager.addEntity("radar", UI_LAYER);
-            radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64.0f, 64.0f, 1.0f);
+            radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64, 64, 1);
             radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
 
 			Entity& label = manager.addEntity("label_1", UI_LAYER);
-			label.addComponent<LabelComponent>(10,10, "Level 1", "charriot", SDL_Color{255,255,255,255});
+			label.addComponent<LabelComponent>(10.0f, 10.0f, "Level 1", "charriot", SDL_Color{255, 255, 255, 255});
 
             manager.listEntities();
             break;

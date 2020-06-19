@@ -15,7 +15,7 @@ class Map{
 		Map(std::string texture_id, int scale, int tile_size);
 		~Map();
 		void loadMap(std::string file_path, int map_size_x, int map_size_y);
-		void addTile(int source_x, int source_y, int destination_x, int destination_y);
+		void addTile(int source_x, int source_y, float destination_x, float destination_y);
 	private:
 		static int _tile_count;
 		std::string _texture_id;

@@ -1,6 +1,6 @@
 #include "LabelComponent.hpp"
 
-LabelComponent::LabelComponent(int x, int y, std::string text, std::string font, SDL_Color color) : _position{x, y},
+LabelComponent::LabelComponent(float x, float y, std::string text, std::string font, SDL_Color color) : _position{x, y},
                                                                                                     _text(text),
                                                                                                     _font(font),
                                                                                                     _color(color) {
@@ -13,8 +13,13 @@ void LabelComponent::setLabelText(std::string text, std::string font) {
         std::cerr << "[ERROR] Unable to render text surface ! SDL_ttf error: " << TTF_GetError() << "\n";
     }
     _texture = SDL_CreateTextureFromSurface(Engine::_renderer, surface);
+    if (_texture == nullptr) {
+        std::cerr << "[ERROR] Unable to create texture from rendered text! SDL_Error: " << SDL_GetError() << "\n";
+    } else {
+        _position.w = surface->w;
+        _position.h = surface->h;
+    }
 	SDL_FreeSurface(surface);
-	SDL_QueryTexture(_texture, nullptr, nullptr, &_position.w, &_position.h);
 }
 
 void LabelComponent::initialize() {}

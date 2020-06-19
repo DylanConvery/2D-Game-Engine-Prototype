@@ -3,8 +3,8 @@
 TileComponent::TileComponent(
     int source_x,
     int source_y,
-    int destination_x,
-    int destination_y,
+    float destination_x,
+    float destination_y,
     int tile_size,
     int tile_scale,
     std::string asset_texture_id) {
@@ -43,7 +43,7 @@ void TileComponent::render() {
     if (_tile_container_visible) {
 		SDL_SetRenderDrawBlendMode(Engine::_renderer, SDL_BLENDMODE_BLEND);
         SDL_SetRenderDrawColor(Engine::_renderer, 0, 255, 0, 100);
-        SDL_RenderDrawRect(Engine::_renderer, &_destination);
+        SDL_RenderDrawRectF(Engine::_renderer, &_destination);
     }
 #endif  // DEBUG
 }

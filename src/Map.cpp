@@ -24,7 +24,7 @@ void Map::loadMap(std::string file_path, int map_size_x, int map_size_y) {
 }
 
 //adds new tile to scene
-void Map::addTile(int source_x, int source_y, int destination_x, int destination_y) {
+void Map::addTile(int source_x, int source_y, float destination_x, float destination_y) {
     Entity& tile(manager.addEntity("tile_" + std::to_string(_tile_count++), VEGETATION_LAYER));
     tile.addComponent<TileComponent>(source_x, source_y, destination_x, destination_y, _tile_size, _scale, _texture_id);
 }

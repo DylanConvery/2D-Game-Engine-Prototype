@@ -7,14 +7,14 @@
 
 class LabelComponent : public Component {
    public:
-    LabelComponent(int x, int y, std::string text, std::string font, SDL_Color color);
+    LabelComponent(float x, float y, std::string text, std::string font, SDL_Color color);
     void initialize() override;
     void update(float delta_time) override;
     void render() override;
     void setLabelText(std::string text, std::string font);
 
    private:
-    SDL_Rect _position;
+    SDL_FRect _position;
     std::string _text;
     std::string _font;
     SDL_Color _color;

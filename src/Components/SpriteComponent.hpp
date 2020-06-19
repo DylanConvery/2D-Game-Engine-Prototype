@@ -26,7 +26,7 @@ class SpriteComponent : public Component {
     TransformComponent* _transform;
     SDL_Texture* _texture;
     SDL_Rect _source_rectangle;
-    SDL_Rect _destination_rect;
+    SDL_FRect _destination_rect;
 
     std::map<std::string, Animation> _animations;
     std::string _animation;

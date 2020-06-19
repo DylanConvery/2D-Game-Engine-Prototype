@@ -42,7 +42,7 @@ class Engine {
     static SDL_Renderer* _renderer;
     static AssetManager* _asset_manager;
     static SDL_Event _event;
-    static SDL_Rect _camera;
+    static SDL_FRect _camera;
     uint32_t _ticks_last_frame;
 
    private:

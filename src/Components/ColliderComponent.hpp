@@ -19,15 +19,14 @@ class ColliderComponent : public Component {
     bool _visible;
 #endif  // DEBUG
 
-    SDL_Rect _collider;
+    SDL_FRect _collider;
     std::string _collider_tag;
 
    private:
     SDL_Rect _source;
-    SDL_Rect _destination;
+    SDL_FRect _destination;
     TransformComponent* _transform;
     SDL_Texture* _texture;
-
 };
 
 #endif

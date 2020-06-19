@@ -6,7 +6,7 @@
 class FontManager {
    public:
     static TTF_Font* loadFont(std::string path, int font_size);
-	static void draw(SDL_Texture* texture, SDL_Rect destination);
+	static void draw(SDL_Texture* texture, SDL_FRect destination);
 };
 
 #endif  // !FONTMANAGER_H
