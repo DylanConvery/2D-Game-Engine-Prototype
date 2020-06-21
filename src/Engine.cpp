@@ -52,7 +52,7 @@ bool Engine::init(int width, int height) {
         std::cout << "[SUCCESS] SDL renderer created successfully!\n";
     }
 
-	// initialize PNG loading
+    // initialize PNG loading
     if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG) {
         std::cerr << "[ERROR] SDL_Image could not be initialized! SDL_Image Error: " << IMG_GetError() << "\n";
         return false;
@@ -60,7 +60,7 @@ bool Engine::init(int width, int height) {
         std::cout << "[SUCCESS] SDL_Image initialized successfully!\n";
     }
 
-	if (TTF_Init() < 0) {
+    if (TTF_Init() < 0) {
         std::cerr << "[ERROR] SDL_ttf could not be initialized! SDL_ttf Error: " << TTF_GetError() << "\n";
         return false;
     } else {
@@ -76,6 +76,9 @@ bool Engine::init(int width, int height) {
 
 Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
 
+#ifdef DEBUG
+Entity& fps_label(manager.addEntity("label_1", UI_LAYER));
+#endif // DEBUG
 void Engine::loadLevel(int level) {
     switch (level) {
         case 0: {
@@ -84,7 +87,7 @@ void Engine::loadLevel(int level) {
             _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
             _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
             _asset_manager->addTexture("helipad-img", "./assets/images/heliport.png");
-			_asset_manager->addFont("charriot", "./assets/fonts/charriot.ttf", 16);
+            _asset_manager->addFont("charriot", "./assets/fonts/charriot.ttf", 16);
 
 #ifdef DEBUG
             _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
@@ -103,18 +106,18 @@ void Engine::loadLevel(int level) {
             tank.addComponent<SpriteComponent>("tank-img");
             tank.addComponent<ColliderComponent>("ENEMY");
 
-			Entity& helipad(manager.addEntity("helipad", OBSTACLE_LAYER));
-			helipad.addComponent<TransformComponent>(470.0f, 420.0f, 0.0f, 0.0f, 32, 32, 1);
-			helipad.addComponent<SpriteComponent>("helipad-img");
-			helipad.addComponent<ColliderComponent>("TARGET");
+            Entity& helipad(manager.addEntity("helipad", OBSTACLE_LAYER));
+            helipad.addComponent<TransformComponent>(470.0f, 420.0f, 0.0f, 0.0f, 32, 32, 1);
+            helipad.addComponent<SpriteComponent>("helipad-img");
+            helipad.addComponent<ColliderComponent>("TARGET");
 
             Entity& radar = manager.addEntity("radar", UI_LAYER);
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64, 64, 1);
             radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
 
-			Entity& label = manager.addEntity("label_1", UI_LAYER);
-			label.addComponent<LabelComponent>(10.0f, 10.0f, "Level 1", "charriot", SDL_Color{255, 255, 255, 255});
-
+#ifdef DEBUG
+            fps_label.addComponent<LabelComponent>(10.0f, 10.0f, "", "charriot", SDL_Color{255, 255, 255, 255});
+#endif // DEBUG
             manager.listEntities();
             break;
         }
@@ -183,7 +186,7 @@ void Engine::update() {
     // delta time = difference in ticks from last frame converted to seconds
     // how much time has ellapsed since the last frame.
     float delta_time = (SDL_GetTicks() - _ticks_last_frame) / 1000.0f;
-
+    
     // clamp deltatime to maximum value. This is so if we are debugging,
     // our delta time can become huge between steps. This can also happen
     // if our CPU suddenly becomes bogged down with some other operation
@@ -192,6 +195,16 @@ void Engine::update() {
     // sets the new ticks for the current frame to be used in the next pass
     _ticks_last_frame = SDL_GetTicks();
 
+#ifdef DEBUG
+    if(SDL_GetTicks() - last_second >= 1000){
+        fps = std::to_string(fps_counter);
+        last_second = SDL_GetTicks();
+        fps_counter = 0;
+    }
+    LabelComponent* label = fps_label.getComponent<LabelComponent>();
+    label->setLabelText(fps, "charriot");
+    ++fps_counter;
+#endif // DEBUG
     manager.update(delta_time);
 
     camera();
@@ -224,21 +237,21 @@ void Engine::camera() {
 void Engine::collisions() {
     COLLISION_TYPE collision = manager.entityCollisions();
     if (collision == PLAYER_ENEMY_COLLISION) {
-		gameOver();
+        gameOver();
     }
-	if(collision == TARGET_COLLISION){
-		nextLevel(1);
-	}
+    if(collision == TARGET_COLLISION){
+        nextLevel(1);
+    }
 }
 
 void Engine::nextLevel(int level){
-	std::cout << "Loading next level\n";
-	_loop = false;
+    std::cout << "Loading next level\n";
+    _loop = false;
 }
 
 void Engine::gameOver(){
-	std::cout << "Game Over\n";
-	_loop = false;
+    std::cout << "Game Over\n";
+    _loop = false;
 }
 
 // renders the state of our application, shows our entities
@@ -272,7 +285,7 @@ void Engine::destroy() {
     _window = nullptr;
 
     // quit sdl and subsystems
-	IMG_Quit();
-	TTF_Quit();
+    IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
 }
