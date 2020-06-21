@@ -186,6 +186,11 @@ void Engine::update() {
     // delta time = difference in ticks from last frame converted to seconds
     // how much time has ellapsed since the last frame.
     float delta_time = (SDL_GetTicks() - _ticks_last_frame) / 1000.0f;
+
+#ifdef DEBUG
+    LabelComponent* label = fps_label.getComponent<LabelComponent>();
+    label->setLabelText(std::to_string(delta_time), "charriot");
+#endif // DEBUG
     
     // clamp deltatime to maximum value. This is so if we are debugging,
     // our delta time can become huge between steps. This can also happen
@@ -195,16 +200,6 @@ void Engine::update() {
     // sets the new ticks for the current frame to be used in the next pass
     _ticks_last_frame = SDL_GetTicks();
 
-#ifdef DEBUG
-    if(SDL_GetTicks() - last_second >= 1000){
-        fps = std::to_string(fps_counter);
-        last_second = SDL_GetTicks();
-        fps_counter = 0;
-    }
-    LabelComponent* label = fps_label.getComponent<LabelComponent>();
-    label->setLabelText(fps, "charriot");
-    ++fps_counter;
-#endif // DEBUG
     manager.update(delta_time);
 
     camera();

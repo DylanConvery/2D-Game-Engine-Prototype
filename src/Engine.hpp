@@ -50,9 +50,6 @@ class Engine {
     bool _loop;
 #ifdef DEBUG
 	bool _pressed;
-    signed fps_counter = 0;
-    uint32_t last_second = 0;
-    std::string fps = " ";
 #endif // DEBUG
 };
 #endif  // !ENGINE_H
