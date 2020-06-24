@@ -3,14 +3,16 @@
 EntityManager::EntityManager() {
 #ifdef DEBUG
     _colliders_visible = false;
-	_tile_map_visible = false;
 #endif  // DEBUG
 }
 
 //updates all our entities within our application
 void EntityManager::update(float delta_time) {
-    for (auto& entity : _entities) {
-        entity->update(delta_time);
+	for(auto i = _entities.begin(); i < _entities.end(); i++){
+		(*i)->update(delta_time);
+		if(!(*i)->active()){
+			_entities.erase(i);
+		}
     }
 }
 
@@ -22,6 +24,10 @@ void EntityManager::showColliders() {
             ColliderComponent* collider = i->getComponent<ColliderComponent>();
             collider->show();
         }
+		if(i->hasComponent<TileComponent>()){
+			TileComponent* tile = i->getComponent<TileComponent>();
+			tile->showTileContainer();
+		}
     }
 }
 
@@ -32,27 +38,11 @@ void EntityManager::hideColliders() {
             ColliderComponent* collider = i->getComponent<ColliderComponent>();
             collider->hide();
         }
-    }
-}
-
-void EntityManager::showTileMap() {
-	_tile_map_visible = true;
-	for(auto i : _entities){
-		if(i->hasComponent<TileComponent>()){
-			TileComponent* tile = i->getComponent<TileComponent>();
-			tile->showTileContainer();
-		}
-	}
-}
-
-void EntityManager::hideTileMap() {
-	_tile_map_visible = false;
-	for(auto i : _entities){
 		if(i->hasComponent<TileComponent>()){
 			TileComponent* tile = i->getComponent<TileComponent>();
 			tile->hideTileContainer();
 		}
-	}
+    }
 }
 #endif  // DEBUG
 

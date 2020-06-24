@@ -78,7 +78,7 @@ Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
 
 #ifdef DEBUG
 Entity& fps_label(manager.addEntity("label_1", UI_LAYER));
-#endif // DEBUG
+#endif  // DEBUG
 
 void Engine::loadLevel(int level) {
     switch (level) {
@@ -89,7 +89,7 @@ void Engine::loadLevel(int level) {
             _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
             _asset_manager->addTexture("helipad-img", "./assets/images/heliport.png");
             _asset_manager->addFont("charriot", "./assets/fonts/charriot.ttf", 16);
-			_asset_manager->addTexture("projectile-img", "./assets/images/bullet-enemy.png");
+            _asset_manager->addTexture("projectile-img", "./assets/images/bullet-enemy.png");
 
 #ifdef DEBUG
             _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
@@ -104,7 +104,7 @@ void Engine::loadLevel(int level) {
             player.addComponent<ColliderComponent>("PLAYER");
 
             Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
-            tank.addComponent<TransformComponent>(150.0f, 495.0f, 5.0f, 0.0f, 32, 32, 1);
+            tank.addComponent<TransformComponent>(150.0f, 495.0f, 0,0, 32, 32, 1);
             tank.addComponent<SpriteComponent>("tank-img");
             tank.addComponent<ColliderComponent>("ENEMY");
 
@@ -117,14 +117,15 @@ void Engine::loadLevel(int level) {
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64, 64, 1);
             radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
 
-			Entity& projectile(manager.addEntity("projectile", PROJECTILE_LAYER));
-			projectile.addComponent<TransformComponent>(150+16, 495+16, 0, 0, 4, 4, 1);
-			projectile.addComponent<SpriteComponent>("projectile-img");
-			projectile.addComponent<ColliderComponent>("PROJECTILE");
+            Entity& projectile(manager.addEntity("projectile", PROJECTILE_LAYER));
+            projectile.addComponent<TransformComponent>(150 + 16, 495 + 16, 0, 0, 4, 4, 1);
+            projectile.addComponent<SpriteComponent>("projectile-img");
+            projectile.addComponent<ColliderComponent>("PROJECTILE");
+            projectile.addComponent<ProjectileEmitterComponent>(50, 200, 270, true);
 
 #ifdef DEBUG
             fps_label.addComponent<LabelComponent>(10.0f, 10.0f, "", "charriot", SDL_Color{255, 255, 255, 255});
-#endif // DEBUG
+#endif  // DEBUG
             manager.listEntities();
             break;
         }
@@ -154,12 +155,6 @@ void Engine::processInput() {
                         manager.showColliders();
                     } else {
                         manager.hideColliders();
-                    }
-
-                    if (!manager._tile_map_visible) {
-                        manager.showTileMap();
-                    } else {
-                        manager.hideTileMap();
                     }
                 }
                 break;
@@ -197,8 +192,8 @@ void Engine::update() {
 #ifdef DEBUG
     LabelComponent* label = fps_label.getComponent<LabelComponent>();
     label->setLabelText(std::to_string(delta_time), "charriot");
-#endif // DEBUG
-    
+#endif  // DEBUG
+
     // clamp deltatime to maximum value. This is so if we are debugging,
     // our delta time can become huge between steps. This can also happen
     // if our CPU suddenly becomes bogged down with some other operation
@@ -238,20 +233,25 @@ void Engine::camera() {
 
 void Engine::collisions() {
     COLLISION_TYPE collision = manager.entityCollisions();
-    if (collision == PLAYER_ENEMY_COLLISION) {
-        gameOver();
-    }
-    if(collision == TARGET_COLLISION){
-        nextLevel(1);
+    switch (collision) {
+        case TARGET_COLLISION:
+            nextLevel(1);
+            break;
+        case PLAYER_ENEMY_COLLISION:
+        case PLAYER_PROJECTILE_COLLSION:
+            gameOver();
+            break;
+        default:
+            break;
     }
 }
 
-void Engine::nextLevel(int level){
+void Engine::nextLevel(int level) {
     std::cout << "Loading next level\n";
     _loop = false;
 }
 
-void Engine::gameOver(){
+void Engine::gameOver() {
     std::cout << "Game Over\n";
     _loop = false;
 }

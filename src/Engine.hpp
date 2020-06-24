@@ -16,6 +16,7 @@
 #include "Components/PlayerInputComponent.hpp"
 #include "Components/TileComponent.hpp"
 #include "Components/LabelComponent.hpp"
+#include "Components/ProjectileEmitterComponent.hpp"
 #include "Map.hpp"
 #include "Constants.hpp"
 #include "Entity.hpp"
