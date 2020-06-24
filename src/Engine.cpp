@@ -79,6 +79,7 @@ Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
 #ifdef DEBUG
 Entity& fps_label(manager.addEntity("label_1", UI_LAYER));
 #endif // DEBUG
+
 void Engine::loadLevel(int level) {
     switch (level) {
         case 0: {
@@ -88,6 +89,7 @@ void Engine::loadLevel(int level) {
             _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
             _asset_manager->addTexture("helipad-img", "./assets/images/heliport.png");
             _asset_manager->addFont("charriot", "./assets/fonts/charriot.ttf", 16);
+			_asset_manager->addTexture("projectile-img", "./assets/images/bullet-enemy.png");
 
 #ifdef DEBUG
             _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
@@ -114,6 +116,11 @@ void Engine::loadLevel(int level) {
             Entity& radar = manager.addEntity("radar", UI_LAYER);
             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64, 64, 1);
             radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
+
+			Entity& projectile(manager.addEntity("projectile", PROJECTILE_LAYER));
+			projectile.addComponent<TransformComponent>(150+16, 495+16, 0, 0, 4, 4, 1);
+			projectile.addComponent<SpriteComponent>("projectile-img");
+			projectile.addComponent<ColliderComponent>("PROJECTILE");
 
 #ifdef DEBUG
             fps_label.addComponent<LabelComponent>(10.0f, 10.0f, "", "charriot", SDL_Color{255, 255, 255, 255});
