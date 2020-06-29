@@ -2,6 +2,8 @@
 
 #include "Constants.hpp"
 #include "Engine.hpp"
+#include "../lib/lua/sol.hpp"
+
 
 int main(int argc, char* args[]) {
     Engine game;
