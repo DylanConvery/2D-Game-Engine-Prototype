@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "../lib/glm/glm.hpp"
+#include "../lib/lua/sol.hpp"
 #include "AssetManager.hpp"
 #include "Components/SpriteComponent.hpp"
 #include "Components/TransformComponent.hpp"

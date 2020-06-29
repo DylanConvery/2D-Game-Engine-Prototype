@@ -67,72 +67,130 @@ bool Engine::init(int width, int height) {
         std::cout << "[SUCCESS] SDL_ttf initialized successfully!\n";
     }
 
-    loadLevel(0);
+    loadLevel(1);
 
     // game is now running
     _loop = true;
     return _loop;
 }
 
-Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
+// Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
 
-#ifdef DEBUG
-Entity& fps_label(manager.addEntity("label_1", UI_LAYER));
-#endif  // DEBUG
+// #ifdef DEBUG
+// Entity& fps_label(manager.addEntity("label_1", UI_LAYER));
+// #endif  // DEBUG
 
 void Engine::loadLevel(int level) {
-    switch (level) {
-        case 0: {
-            _asset_manager->addTexture("tank-img", "./assets/images/tank-big-right.png");
-            _asset_manager->addTexture("chopper-spritesheet", "./assets/images/chopper-spritesheet.png");
-            _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
-            _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
-            _asset_manager->addTexture("helipad-img", "./assets/images/heliport.png");
-            _asset_manager->addFont("charriot", "./assets/fonts/charriot.ttf", 16);
-            _asset_manager->addTexture("projectile-img", "./assets/images/bullet-enemy.png");
+    sol::state lua;
+    lua.open_libraries(sol::lib::base, sol::lib::os, sol::lib::math);
+    std::string scene_name = "scene" + std::to_string(level);
+    lua.script_file("./assets/scripts/" + scene_name + ".lua");
+    sol::table scene_data = lua[scene_name];
 
-#ifdef DEBUG
-            _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
-#endif  // DEBUG
-
-            map = new Map("jungle-tilemap", 2, 32);
-            map->loadMap("./assets/tilemaps/jungle.map", 25, 20);
-
-            player.addComponent<TransformComponent>(240.0f, 106.0f, 0.0f, 0.0f, 32, 32, 1);
-            player.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
-            player.addComponent<PlayerInputComponent>(200, "w", "s", "a", "d", "space");
-            player.addComponent<ColliderComponent>("PLAYER");
-
-            Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
-            tank.addComponent<TransformComponent>(150.0f, 495.0f, 0,0, 32, 32, 1);
-            tank.addComponent<SpriteComponent>("tank-img");
-            tank.addComponent<ColliderComponent>("ENEMY");
-
-            Entity& helipad(manager.addEntity("helipad", OBSTACLE_LAYER));
-            helipad.addComponent<TransformComponent>(470.0f, 420.0f, 0.0f, 0.0f, 32, 32, 1);
-            helipad.addComponent<SpriteComponent>("helipad-img");
-            helipad.addComponent<ColliderComponent>("TARGET");
-
-            Entity& radar = manager.addEntity("radar", UI_LAYER);
-            radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64, 64, 1);
-            radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
-
-            Entity& projectile(manager.addEntity("projectile", PROJECTILE_LAYER));
-            projectile.addComponent<TransformComponent>(150 + 16, 495 + 16, 0, 0, 4, 4, 1);
-            projectile.addComponent<SpriteComponent>("projectile-img");
-            projectile.addComponent<ColliderComponent>("PROJECTILE");
-            projectile.addComponent<ProjectileEmitterComponent>(50, 200, 270, true);
-
-#ifdef DEBUG
-            fps_label.addComponent<LabelComponent>(10.0f, 10.0f, "", "charriot", SDL_Color{255, 255, 255, 255});
-#endif  // DEBUG
-            manager.listEntities();
+    // loading assets
+    sol::table scene_assets = scene_data["assets"];
+    int asset_index = 0;
+    while (true) {
+        sol::optional<sol::table> asset_row = scene_assets[asset_index];
+        if (asset_row == sol::nullopt) {
             break;
+        } else {
+            sol::table scene_asset = scene_assets[asset_index];
+            std::string type = scene_asset["type"];
+            if (type == "texture") {
+                std::string id = scene_asset["id"];
+                std::string file = scene_asset["file"];
+                _asset_manager->addTexture(id, file);
+            }  else if (type == "font") {
+                std::string id = scene_asset["id"];
+                std::string file = scene_asset["file"];
+                std::string size = scene_asset["size"];
+                _asset_manager->addFont(id, file, std::stoi(size));
+            }
         }
-        default: {
-            break;
-        }
+        ++asset_index;
     }
+
+    //loading map
+    sol::table scene_map = scene_data["map"];
+    std::string map_texture_id = scene_map["texture_id"];
+    std::string map_scale = scene_map["scale"];
+    std::string map_tile_size = scene_map["tile_size"];
+    std::string map_file = scene_map["file"];
+    std::string map_width = scene_map["width"];
+    std::string map_height = scene_map["height"];
+
+    map = new Map(map_texture_id, std::stoi(map_scale), std::stoi(map_tile_size));
+    map->loadMap(map_file, std::stoi(map_width), std::stoi(map_height));
+
+    //load entities and components
+    sol::table scene_entities = scene_data["entities"];
+    int entity_index = 0;
+    while (true) {
+        sol::optional<sol::table> entity_row = scene_entities[entity_index];
+        if (entity_row == sol::nullopt) {
+            break;
+        } else {
+            sol::table scene_entity = scene_entities[entity_index];
+            std::string name = scene_entity["name"];
+            std::string layer = scene_entity["layer"];
+            Entity& entity = manager.addEntity(name, static_cast<LAYERS>(std::stoi(layer)));
+        }
+        ++entity_index;
+    }
+
+    //     switch (level) {
+    //         case 0: {
+    //             _asset_manager->addTexture("tank-img", "./assets/images/tank-big-right.png");
+    //             _asset_manager->addTexture("chopper-spritesheet", "./assets/images/chopper-spritesheet.png");
+    //             _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
+    //             _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
+    //             _asset_manager->addTexture("helipad-img", "./assets/images/heliport.png");
+    //             _asset_manager->addFont("charriot", "./assets/fonts/charriot.ttf", 16);
+    //             _asset_manager->addTexture("projectile-img", "./assets/images/bullet-enemy.png");
+
+    // #ifdef DEBUG
+    //             _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
+    // #endif  // DEBUG
+
+    //             map = new Map("jungle-tilemap", 2, 32);
+    //             map->loadMap("./assets/tilemaps/jungle.map", 25, 20);
+
+    //             player.addComponent<TransformComponent>(240.0f, 106.0f, 0.0f, 0.0f, 32, 32, 1);
+    //             player.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
+    //             player.addComponent<PlayerInputComponent>(200, "w", "s", "a", "d", "space");
+    //             player.addComponent<ColliderComponent>("PLAYER");
+
+    //             Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
+    //             tank.addComponent<TransformComponent>(150.0f, 495.0f, 0,0, 32, 32, 1);
+    //             tank.addComponent<SpriteComponent>("tank-img");
+    //             tank.addComponent<ColliderComponent>("ENEMY");
+
+    //             Entity& helipad(manager.addEntity("helipad", OBSTACLE_LAYER));
+    //             helipad.addComponent<TransformComponent>(470.0f, 420.0f, 0.0f, 0.0f, 32, 32, 1);
+    //             helipad.addComponent<SpriteComponent>("helipad-img");
+    //             helipad.addComponent<ColliderComponent>("TARGET");
+
+    //             Entity& radar = manager.addEntity("radar", UI_LAYER);
+    //             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64, 64, 1);
+    //             radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
+
+    //             Entity& projectile(manager.addEntity("projectile", PROJECTILE_LAYER));
+    //             projectile.addComponent<TransformComponent>(150 + 16, 495 + 16, 0, 0, 4, 4, 1);
+    //             projectile.addComponent<SpriteComponent>("projectile-img");
+    //             projectile.addComponent<ColliderComponent>("PROJECTILE");
+    //             projectile.addComponent<ProjectileEmitterComponent>(50, 200, 270, true);
+
+    // #ifdef DEBUG
+    //             fps_label.addComponent<LabelComponent>(10.0f, 10.0f, "", "charriot", SDL_Color{255, 255, 255, 255});
+    // #endif  // DEBUG
+    //             manager.listEntities();
+    //             break;
+    //         }
+    //         default: {
+    //             break;
+    //         }
+    //     }
 }
 
 // processes input
@@ -189,10 +247,10 @@ void Engine::update() {
     // how much time has ellapsed since the last frame.
     float delta_time = (SDL_GetTicks() - _ticks_last_frame) / 1000.0f;
 
-#ifdef DEBUG
-    LabelComponent* label = fps_label.getComponent<LabelComponent>();
-    label->setLabelText(std::to_string(delta_time), "charriot");
-#endif  // DEBUG
+// #ifdef DEBUG
+//     LabelComponent* label = fps_label.getComponent<LabelComponent>();
+//     label->setLabelText(std::to_string(delta_time), "charriot");
+// #endif  // DEBUG
 
     // clamp deltatime to maximum value. This is so if we are debugging,
     // our delta time can become huge between steps. This can also happen
@@ -204,31 +262,31 @@ void Engine::update() {
 
     manager.update(delta_time);
 
-    camera();
-    collisions();
+    // camera();
+    // collisions();
 }
 
 void Engine::camera() {
-    TransformComponent* player_position = player.getComponent<TransformComponent>();
+    // TransformComponent* player_position = player.getComponent<TransformComponent>();
 
-    _camera.x = player_position->_position.x - ((WINDOW_WIDTH / 2) - (player_position->_width / 2));
-    _camera.y = player_position->_position.y - ((WINDOW_HEIGHT / 2) - (player_position->_height / 2));
+    // _camera.x = player_position->_position.x - ((WINDOW_WIDTH / 2) - (player_position->_width / 2));
+    // _camera.y = player_position->_position.y - ((WINDOW_HEIGHT / 2) - (player_position->_height / 2));
 
-    if (_camera.x < 0) {
-        _camera.x = 0;
-    }
+    // if (_camera.x < 0) {
+    //     _camera.x = 0;
+    // }
 
-    if (_camera.y < 0) {
-        _camera.y = 0;
-    }
+    // if (_camera.y < 0) {
+    //     _camera.y = 0;
+    // }
 
-    if (_camera.x > _camera.w) {
-        _camera.x = _camera.w;
-    }
+    // if (_camera.x > _camera.w) {
+    //     _camera.x = _camera.w;
+    // }
 
-    if (_camera.y > _camera.h) {
-        _camera.y = _camera.h;
-    }
+    // if (_camera.y > _camera.h) {
+    //     _camera.y = _camera.h;
+    // }
 }
 
 void Engine::collisions() {
