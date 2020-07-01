@@ -23,6 +23,7 @@ class EntityManager {
 	void hideColliders();
 #endif  // DEBUG
     std::vector<Entity*> getEntities() const;
+    Entity* getEntityByName(std::string entity_name) const;
     std::vector<Entity*> getEntitiesByLayer(LAYERS layer) const;
     unsigned int size() const;
     void clear();

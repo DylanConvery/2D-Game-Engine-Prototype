@@ -6,7 +6,11 @@ AssetManager* Engine::_asset_manager = new AssetManager(&manager);
 SDL_Renderer* Engine::_renderer = nullptr;
 SDL_Event Engine::_event;
 SDL_FRect Engine::_camera{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
-Map* map;
+Map* map = nullptr;
+Entity* player = nullptr;
+#ifdef DEBUG
+Entity* fps_label = nullptr;
+#endif // !DEBUG
 
 // initializes our member variables
 Engine::Engine() : _loop(false), _window(nullptr), _ticks_last_frame(0) {
@@ -74,12 +78,6 @@ bool Engine::init(int width, int height) {
     return _loop;
 }
 
-// Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
-
-// #ifdef DEBUG
-// Entity& fps_label(manager.addEntity("label_1", UI_LAYER));
-// #endif  // DEBUG
-
 void Engine::loadLevel(int level) {
     sol::state lua;
     lua.open_libraries(sol::lib::base, sol::lib::os, sol::lib::math);
@@ -91,21 +89,23 @@ void Engine::loadLevel(int level) {
     sol::table scene_assets = scene_data["assets"];
     int asset_index = 0;
     while (true) {
-        sol::optional<sol::table> asset_row = scene_assets[asset_index];
-        if (asset_row == sol::nullopt) {
+        sol::optional<sol::table> asset_check = scene_assets[asset_index];
+        if (asset_check == sol::nullopt) {
             break;
         } else {
             sol::table scene_asset = scene_assets[asset_index];
             std::string type = scene_asset["type"];
             if (type == "texture") {
-                std::string id = scene_asset["id"];
-                std::string file = scene_asset["file"];
-                _asset_manager->addTexture(id, file);
+                _asset_manager->addTexture(
+                    scene_asset["id"],
+                    scene_asset["file"]
+                );
             }  else if (type == "font") {
-                std::string id = scene_asset["id"];
-                std::string file = scene_asset["file"];
-                std::string size = scene_asset["size"];
-                _asset_manager->addFont(id, file, std::stoi(size));
+                _asset_manager->addFont(
+                    scene_asset["id"], 
+                    scene_asset["file"],
+                    scene_asset["size"]
+                );
             }
         }
         ++asset_index;
@@ -113,84 +113,149 @@ void Engine::loadLevel(int level) {
 
     //loading map
     sol::table scene_map = scene_data["map"];
-    std::string map_texture_id = scene_map["texture_id"];
-    std::string map_scale = scene_map["scale"];
-    std::string map_tile_size = scene_map["tile_size"];
-    std::string map_file = scene_map["file"];
-    std::string map_width = scene_map["width"];
-    std::string map_height = scene_map["height"];
-
-    map = new Map(map_texture_id, std::stoi(map_scale), std::stoi(map_tile_size));
-    map->loadMap(map_file, std::stoi(map_width), std::stoi(map_height));
+    map = new Map(
+        scene_map["texture_id"], 
+        scene_map["scale"], 
+        scene_map["tile_size"]
+    );
+    map->loadMap(
+        scene_map["file"],
+        scene_map["width"],
+        scene_map["height"]
+    );
 
     //load entities and components
     sol::table scene_entities = scene_data["entities"];
     int entity_index = 0;
     while (true) {
-        sol::optional<sol::table> entity_row = scene_entities[entity_index];
-        if (entity_row == sol::nullopt) {
+        //check if entity at given index exists
+        sol::optional<sol::table> entity_check = scene_entities[entity_index];
+        if (entity_check == sol::nullopt) {
             break;
         } else {
+            //store entity 
             sol::table scene_entity = scene_entities[entity_index];
-            std::string name = scene_entity["name"];
-            std::string layer = scene_entity["layer"];
-            Entity& entity = manager.addEntity(name, static_cast<LAYERS>(std::stoi(layer)));
+            Entity& entity = manager.addEntity(scene_entity["name"], static_cast<LAYERS>(scene_entity["layer"]));
+
+            //check if component exists for entity 
+
+            //transform
+            sol::optional<sol::table> entity_transform_check = scene_entity["components"]["transform"];
+            if(entity_transform_check != sol::nullopt){
+                entity.addComponent<TransformComponent>(
+                    scene_entity["components"]["transform"]["x"],
+                    scene_entity["components"]["transform"]["y"],
+                    scene_entity["components"]["transform"]["velocity_x"],
+                    scene_entity["components"]["transform"]["velocity_y"],
+                    scene_entity["components"]["transform"]["width"], 
+                    scene_entity["components"]["transform"]["height"],
+                    scene_entity["components"]["transform"]["scale"]
+                );
+            }
+
+            //sprite
+            sol::optional<sol::table> entity_sprite_check = scene_entity["components"]["sprite"];
+            if(entity_sprite_check != sol::nullopt){
+                std::string asset_texture_id = scene_entity["components"]["sprite"]["asset_texture_id"];
+                bool animated = scene_entity["components"]["sprite"]["animated"];
+                if(animated){
+                    entity.addComponent<SpriteComponent>(
+                        asset_texture_id,
+                        scene_entity["components"]["sprite"]["frames"],
+                        scene_entity["components"]["sprite"]["speed"],
+                        scene_entity["components"]["sprite"]["directed"],
+                        scene_entity["components"]["sprite"]["fixed"]
+                    );
+                } else {
+                    entity.addComponent<SpriteComponent>(
+                        asset_texture_id
+                    );
+                }
+            }
+
+            //collider
+            sol::optional<sol::table> entity_collider_check = scene_entity["components"]["collider"];
+            if(entity_collider_check != sol::nullopt){
+                std::string collider_tag = scene_entity["components"]["collider"]["tag"];      
+                entity.addComponent<ColliderComponent>(
+                   collider_tag
+                );
+            }
+
+            //projectile_emitter
+            sol::optional<sol::table> entity_projectile_emitter_check = scene_entity["components"]["projectile_emitter"];
+            if(entity_projectile_emitter_check != sol::nullopt && entity_transform_check != sol::nullopt){
+                Entity& projectile = manager.addEntity("projectile", PROJECTILE_LAYER);
+                
+                std::string asset_texture_id = scene_entity["components"]["projectile_emitter"]["asset_texture_id"];
+                float parent_entity_x = scene_entity["components"]["transform"]["x"];
+                float parent_entity_y = scene_entity["components"]["transform"]["y"];
+                int parent_entity_width = scene_entity["components"]["transform"]["width"];
+                int parent_entity_height = scene_entity["components"]["transform"]["height"];
+
+                projectile.addComponent<TransformComponent>(
+                    parent_entity_x + (parent_entity_width / 2),
+                    parent_entity_y + (parent_entity_height / 2),
+                    0,
+                    0,
+                    scene_entity["components"]["projectile_emitter"]["width"],
+                    scene_entity["components"]["projectile_emitter"]["height"],
+                    1
+                );
+
+                projectile.addComponent<SpriteComponent>(
+                    asset_texture_id
+                );
+                
+                projectile.addComponent<ProjectileEmitterComponent>(
+                   scene_entity["components"]["projectile_emitter"]["speed"],
+                   scene_entity["components"]["projectile_emitter"]["range"],
+                   scene_entity["components"]["projectile_emitter"]["angle"],
+                   scene_entity["components"]["projectile_emitter"]["loop"]
+                );
+
+                projectile.addComponent<ColliderComponent>(
+                    "PROJECTILE"
+                );
+            }
+
+            //input
+            sol::optional<sol::table> entity_input_check = scene_entity["components"]["input"];
+            if(entity_input_check != sol::nullopt){
+                entity.addComponent<PlayerInputComponent>(
+                    scene_entity["components"]["input"]["speed"],
+                    scene_entity["components"]["input"]["keyboard"]["up"],
+                    scene_entity["components"]["input"]["keyboard"]["down"],
+                    scene_entity["components"]["input"]["keyboard"]["left"],
+                    scene_entity["components"]["input"]["keyboard"]["right"],
+                    scene_entity["components"]["input"]["keyboard"]["space"]
+                );
+            }
+
+            //label
+            sol::optional<sol::table> entity_label_check = scene_entity["components"]["label"];
+            if(entity_label_check != sol::nullopt){
+                entity.addComponent<LabelComponent>(
+                    scene_entity["components"]["label"]["x"],
+                    scene_entity["components"]["label"]["y"],
+                    scene_entity["components"]["label"]["text"],
+                    scene_entity["components"]["label"]["font"],
+                    SDL_Color{
+                        scene_entity["components"]["label"]["color"]["r"],
+                        scene_entity["components"]["label"]["color"]["g"],
+                        scene_entity["components"]["label"]["color"]["b"],
+                        scene_entity["components"]["label"]["color"]["a"]
+                    }
+                );
+            }
         }
         ++entity_index;
     }
-
-    //     switch (level) {
-    //         case 0: {
-    //             _asset_manager->addTexture("tank-img", "./assets/images/tank-big-right.png");
-    //             _asset_manager->addTexture("chopper-spritesheet", "./assets/images/chopper-spritesheet.png");
-    //             _asset_manager->addTexture("radar-img", "./assets/images/radar.png");
-    //             _asset_manager->addTexture("jungle-tilemap", "./assets/tilemaps/jungle.png");
-    //             _asset_manager->addTexture("helipad-img", "./assets/images/heliport.png");
-    //             _asset_manager->addFont("charriot", "./assets/fonts/charriot.ttf", 16);
-    //             _asset_manager->addTexture("projectile-img", "./assets/images/bullet-enemy.png");
-
-    // #ifdef DEBUG
-    //             _asset_manager->addTexture("bounding-box", "./assets/images/collision-texture.png");
-    // #endif  // DEBUG
-
-    //             map = new Map("jungle-tilemap", 2, 32);
-    //             map->loadMap("./assets/tilemaps/jungle.map", 25, 20);
-
-    //             player.addComponent<TransformComponent>(240.0f, 106.0f, 0.0f, 0.0f, 32, 32, 1);
-    //             player.addComponent<SpriteComponent>("chopper-spritesheet", 2, 90, true, false);
-    //             player.addComponent<PlayerInputComponent>(200, "w", "s", "a", "d", "space");
-    //             player.addComponent<ColliderComponent>("PLAYER");
-
-    //             Entity& tank(manager.addEntity("tank", ENEMY_LAYER));
-    //             tank.addComponent<TransformComponent>(150.0f, 495.0f, 0,0, 32, 32, 1);
-    //             tank.addComponent<SpriteComponent>("tank-img");
-    //             tank.addComponent<ColliderComponent>("ENEMY");
-
-    //             Entity& helipad(manager.addEntity("helipad", OBSTACLE_LAYER));
-    //             helipad.addComponent<TransformComponent>(470.0f, 420.0f, 0.0f, 0.0f, 32, 32, 1);
-    //             helipad.addComponent<SpriteComponent>("helipad-img");
-    //             helipad.addComponent<ColliderComponent>("TARGET");
-
-    //             Entity& radar = manager.addEntity("radar", UI_LAYER);
-    //             radar.addComponent<TransformComponent>(720.0f, 15.0f, 0.0f, 0.0f, 64, 64, 1);
-    //             radar.addComponent<SpriteComponent>("radar-img", 8, 150, false, true);
-
-    //             Entity& projectile(manager.addEntity("projectile", PROJECTILE_LAYER));
-    //             projectile.addComponent<TransformComponent>(150 + 16, 495 + 16, 0, 0, 4, 4, 1);
-    //             projectile.addComponent<SpriteComponent>("projectile-img");
-    //             projectile.addComponent<ColliderComponent>("PROJECTILE");
-    //             projectile.addComponent<ProjectileEmitterComponent>(50, 200, 270, true);
-
-    // #ifdef DEBUG
-    //             fps_label.addComponent<LabelComponent>(10.0f, 10.0f, "", "charriot", SDL_Color{255, 255, 255, 255});
-    // #endif  // DEBUG
-    //             manager.listEntities();
-    //             break;
-    //         }
-    //         default: {
-    //             break;
-    //         }
-    //     }
+    player = manager.getEntityByName("player");
+    #ifdef DEBUG
+    fps_label = manager.getEntityByName("fps_label");
+    manager.listEntities(); 
+    #endif // DEBUG         
 }
 
 // processes input
@@ -247,10 +312,10 @@ void Engine::update() {
     // how much time has ellapsed since the last frame.
     float delta_time = (SDL_GetTicks() - _ticks_last_frame) / 1000.0f;
 
-// #ifdef DEBUG
-//     LabelComponent* label = fps_label.getComponent<LabelComponent>();
-//     label->setLabelText(std::to_string(delta_time), "charriot");
-// #endif  // DEBUG
+#ifdef DEBUG
+    LabelComponent* label = fps_label->getComponent<LabelComponent>();
+    label->setLabelText(std::to_string(delta_time), "charriot");
+#endif  // DEBUG
 
     // clamp deltatime to maximum value. This is so if we are debugging,
     // our delta time can become huge between steps. This can also happen
@@ -262,31 +327,31 @@ void Engine::update() {
 
     manager.update(delta_time);
 
-    // camera();
-    // collisions();
+    camera();
+    collisions();
 }
 
 void Engine::camera() {
-    // TransformComponent* player_position = player.getComponent<TransformComponent>();
+    TransformComponent* player_position = player->getComponent<TransformComponent>();
 
-    // _camera.x = player_position->_position.x - ((WINDOW_WIDTH / 2) - (player_position->_width / 2));
-    // _camera.y = player_position->_position.y - ((WINDOW_HEIGHT / 2) - (player_position->_height / 2));
+    _camera.x = player_position->_position.x - ((WINDOW_WIDTH / 2) - (player_position->_width / 2));
+    _camera.y = player_position->_position.y - ((WINDOW_HEIGHT / 2) - (player_position->_height / 2));
 
-    // if (_camera.x < 0) {
-    //     _camera.x = 0;
-    // }
+    if (_camera.x < 0) {
+        _camera.x = 0;
+    }
 
-    // if (_camera.y < 0) {
-    //     _camera.y = 0;
-    // }
+    if (_camera.y < 0) {
+        _camera.y = 0;
+    }
 
-    // if (_camera.x > _camera.w) {
-    //     _camera.x = _camera.w;
-    // }
+    if (_camera.x > _camera.w) {
+        _camera.x = _camera.w;
+    }
 
-    // if (_camera.y > _camera.h) {
-    //     _camera.y = _camera.h;
-    // }
+    if (_camera.y > _camera.h) {
+        _camera.y = _camera.h;
+    }
 }
 
 void Engine::collisions() {

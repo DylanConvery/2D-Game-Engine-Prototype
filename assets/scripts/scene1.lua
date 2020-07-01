@@ -65,19 +65,22 @@ scene1 = {
                 transform = {
                     x = 240,
                     y = 106,
+                    velocity_x = 0,
+                    velocity_y = 0,
                     width = 32,
                     height = 32,
                     scale = 1,
-                    rotation = 0;
                 },
                 sprite = {
                     asset_texture_id = "chopper_spritesheet",
                     animated = true,
                     frames = 2,
                     speed = 90,
+                    directed = true,
                     fixed = false
                 },
                 input = {
+                    speed = 200,
                     keyboard = {
                         up = "w",
                         left = "a",
@@ -98,10 +101,11 @@ scene1 = {
                 transform = {
                     x = 150,
                     y = 495,
+                    velocity_x = 0,
+                    velocity_y = 0,
                     width = 32,
                     height = 32,
                     scale = 1,
-                    rotation = 0;
                 },
                 sprite = {
                     asset_texture_id = "tank",
@@ -109,6 +113,15 @@ scene1 = {
                 },
                 collider = {
                     tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile",
+                    width = 4,
+                    height = 4,
+                    speed = 70,
+                    range = 300,
+                    angle = 180,
+                    loop = true
                 }
             }
         },
@@ -119,14 +132,15 @@ scene1 = {
                 transform = {
                     x = 470,
                     y = 420,
+                    velocity_x = 0,
+                    velocity_y = 0,
                     width = 32,
                     height = 32,
                     scale = 1,
-                    rotation = 0;
                 },
                 sprite = {
                     asset_texture_id = "helipad",
-                    animated = true,
+                    animated = false,
                 },
                 collider = {
                     tag = "TARGET"
@@ -134,62 +148,36 @@ scene1 = {
             }
         },
         [3] = {
-            name = "projectile",
-            layer = 4,
-            components = {
-                transform = {
-                    x = 166,
-                    y = 511,
-                    width = 4,
-                    height = 4,
-                    scale = 1,
-                    rotation = 0;
-                },
-                sprite = {
-                    asset_texture_id = "projectile",
-                    animated = false,
-                },
-                collider = {
-                    tag = "PROJECTILE"
-                },
-                projectile_emitter = {
-                    asset_texture_id = "projectile",
-                    speed = 50,
-                    range = 200,
-                    angle = 180,
-                    loop = true
-                }
-            }
-        },
-        [4] = {
             name = "radar",
             layer = 6,
             components = {
                 transform = {
                     x = 720,
                     y = 15,
+                    velocity_x = 0,
+                    velocity_y = 0,
                     width = 64,
                     height = 64,
                     scale = 1,
-                    rotation = 0;
                 },
                 sprite = {
                     asset_texture_id = "radar",
                     animated = true,
                     frames = 8,
                     speed = 150,
-                    fixed = false
+                    directed = false,
+                    fixed = true
                 },
             }
         },
-        [5] = {
+        [4] = {
             name = "fps_label",
             layer = 6,
             components = {
                 label = {
                     x = 10,
                     y = 10,
-                    text = "",
+                    text = " ",
                     font = "charriot",
                     color = {
                         r = 255,
