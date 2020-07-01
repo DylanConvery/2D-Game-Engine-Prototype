@@ -67,7 +67,7 @@ scene1 = {
                     fixed = false
                 },
                 input = {
-                    speed = 200,
+                    speed = 50,
                     keyboard = {
                         up = "w",
                         left = "a",
@@ -411,6 +411,161 @@ scene1 = {
                     loop = true
                 }
             }
-        },
+		},
+		[13] = {
+            name = "truck_1",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 243,
+                    y = 497,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "truck-right-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 8,
+                    height = 8,
+                    speed = 70,
+                    range = 1000,
+                    angle = 270,
+                    loop = true
+                }
+            }
+		},
+		[14] = {
+            name = "truck_2",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 111,
+                    y = 993,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "truck-down-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 8,
+                    height = 8,
+                    speed = 70,
+                    range = 1000,
+                    angle = 90,
+                    loop = true
+                }
+            }
+		},
+		[15] = {
+            name = "truck_3",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 760,
+                    y = 200,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "truck-left-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 8,
+                    height = 8,
+                    speed = 70,
+                    range = 1000,
+                    angle = 180,
+                    loop = true
+                }
+            }
+		},
+		[16] = {
+            name = "truck_4",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 1361,
+                    y = 222,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "truck-down-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 8,
+                    height = 8,
+                    speed = 70,
+                    range = 1000,
+                    angle = 90,
+                    loop = true
+                }
+            }
+		},
+		[17] = {
+            name = "truck_5",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 1220,
+                    y = 760,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "tank-small-right-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 8,
+                    height = 8,
+                    speed = 70,
+                    range = 300,
+                    angle = 270,
+                    loop = true
+                }
+            }
+		},
 	}
 }
