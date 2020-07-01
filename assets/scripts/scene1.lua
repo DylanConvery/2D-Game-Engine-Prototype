@@ -67,7 +67,7 @@ scene1 = {
                     fixed = false
                 },
                 input = {
-                    speed = 50,
+                    speed = 150,
                     keyboard = {
                         up = "w",
                         left = "a",
@@ -86,8 +86,8 @@ scene1 = {
             layer = 3,
             components = {
                 transform = {
-                    x = 470,
-                    y = 420,
+                    x = 1395,
+                    y = 495,
                     velocity_x = 0,
                     velocity_y = 0,
                     width = 32,
@@ -437,7 +437,7 @@ scene1 = {
                     width = 8,
                     height = 8,
                     speed = 70,
-                    range = 1000,
+                    range = 300,
                     angle = 270,
                     loop = true
                 }
@@ -468,7 +468,7 @@ scene1 = {
                     width = 8,
                     height = 8,
                     speed = 70,
-                    range = 1000,
+                    range = 300,
                     angle = 90,
                     loop = true
                 }
@@ -499,7 +499,7 @@ scene1 = {
                     width = 8,
                     height = 8,
                     speed = 70,
-                    range = 1000,
+                    range = 300,
                     angle = 180,
                     loop = true
                 }
@@ -530,7 +530,7 @@ scene1 = {
                     width = 8,
                     height = 8,
                     speed = 70,
-                    range = 1000,
+                    range = 300,
                     angle = 90,
                     loop = true
                 }
@@ -550,7 +550,7 @@ scene1 = {
                     scale = 1,
                 },
                 sprite = {
-                    asset_texture_id = "tank-small-right-texture",
+                    asset_texture_id = "truck-right-texture",
                     animated = false,
                 },
                 collider = {
@@ -566,6 +566,755 @@ scene1 = {
                     loop = true
                 }
             }
-		},
+        },
+        [18] = {
+            name = "truck_6",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 1170,
+                    y = 790,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "truck-right-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 8,
+                    height = 8,
+                    speed = 70,
+                    range = 300,
+                    angle = 270,
+                    loop = true
+                }
+            }
+        },
+        [19] = {
+            name = "army_1",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 460,
+                    y = 445,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "army-group-1-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 1000,
+                    angle = math.random(360),
+                    loop = true
+                }
+            }
+        },
+        [20] = {
+            name = "army_2",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 645,
+                    y = 787,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "army-group-2-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 1000,
+                    angle = math.random(360),
+                    loop = true
+                }
+            }
+        },
+        [21] = {
+            name = "army_3",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 645,
+                    y = 740,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "army-group-3-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 1000,
+                    angle = math.random(360),
+                    loop = true
+                }
+            }
+        },
+        [22] = {
+            name = "army_4",
+            layer = 2,
+            components = {
+                transform = {
+                    x = 881,
+                    y = 482,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 32,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "army-group-1-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "ENEMY"
+                },
+                projectile_emitter = {
+                    asset_texture_id = "projectile-texture",
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 1000,
+                    angle = math.random(360),
+                    loop = true
+                }
+            }
+        },
+        [23] = {
+            name = "tree_1",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 700,
+                    y = 380,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-6-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [24] = {
+            name = "tree_2",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 680,
+                    y = 365,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-6-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [25] = {
+            name = "tree_3",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 200,
+                    y = 480,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-6-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [26] = {
+            name = "tree_4",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 310,
+                    y = 490,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 18,
+                    height = 32,
+                    scale = 1,
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-4-texture",
+                    animated = false,
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [27] = {
+            name = "tree_5",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 295,
+                    y = 495,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 18,
+                    height = 22,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-4-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [28] = {
+            name = "tree_6",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 370,
+                    y = 480,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 18,
+                    height = 22,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-4-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [29] = {
+            name = "tree_7",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 214,
+                    y = 982,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-6-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [30] = {
+            name = "tree_8",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 182,
+                    y = 943,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-6-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [31] = {
+            name = "tree_9",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 86,
+                    y = 1064,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-6-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [32] = {
+            name = "tree_10",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 171,
+                    y = 492,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-8-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [33] = {
+            name = "tree_11",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1020,
+                    y = 103,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-8-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [34] = {
+            name = "tree_12",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1117,
+                    y = 100,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-7-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [35] = {
+            name = "tree_13",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1130,
+                    y = 115,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-7-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [36] = {
+            name = "tree_14",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1270,
+                    y = 190,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-7-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [37] = {
+            name = "tree_15",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1280,
+                    y = 205,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-7-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [38] = {
+            name = "tree_16",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1060,
+                    y = 745,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-7-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [39] = {
+            name = "tree_17",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1075,
+                    y = 760,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-6-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [40] = {
+            name = "tree_18",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1090,
+                    y = 760,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-6-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [41] = {
+            name = "tree_19",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1285,
+                    y = 173,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-7-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [42] = {
+            name = "tree_20",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 1036,
+                    y = 93,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 32,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "tree-small-8-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [43] = {
+            name = "rock_1",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 360,
+                    y = 450,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 24,
+                    height = 24,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "rock-big-2-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [44] = {
+            name = "rock_2",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 450,
+                    y = 380,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 16,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "rock-small-1-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [45] = {
+            name = "rock_3",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 435,
+                    y = 400,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 16,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "rock-small-1-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [46] = {
+            name = "rock_4",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 115,
+                    y = 637,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 16,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "rock-small-1-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [47] = {
+            name = "rock_5",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 124,
+                    y = 660,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 16,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "rock-small-1-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        },
+        [48] = {
+            name = "rock_6",
+            layer = 1,
+            components = {
+                transform = {
+                    x = 116,
+                    y = 827,
+                    velocity_x = 0,
+                    velocity_y = 0,
+                    width = 16,
+                    height = 16,
+                    scale = 1,
+                    rotation = 0
+                },
+                sprite = {
+                    asset_texture_id = "rock-small-1-texture",
+                    animated = false
+                },
+                collider = {
+                    tag = "VEGETATION"
+                }
+            }
+        }
 	}
 }

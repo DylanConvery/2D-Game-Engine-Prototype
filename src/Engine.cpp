@@ -369,6 +369,7 @@ void Engine::collisions() {
     }
 }
 
+//TODO: reset camera, make sure we dont try to dereference null pointers, clean up, etc
 void Engine::nextLevel(int level) {
     std::cout << "Loading next level\n";
     _loop = false;
