@@ -1,3 +1,11 @@
+local time = os.date("*t").hour
+local map_texture = "terrain-texture-day"
+if time > 9 and time < 21 then
+    map_texture = "terrain-texture-day"
+else 
+    map_texture = "terrain-texture-night"
+end
+
 scene1 = {
 	    assets = {
         [0] = { type="texture", id = "terrain-texture-day", file = "./assets/tilemaps/jungle.png" },
@@ -37,7 +45,7 @@ scene1 = {
         [33] = { type="font", id = "charriot-font", file = "./assets/fonts/charriot.ttf", size = 14 }
     },
 	map = {
-        texture_id = "terrain-texture-day",
+        texture_id = map_texture,
         scale = 2,
         tile_size = 32,
         file = "./assets/tilemaps/jungle.map", 
@@ -188,8 +196,8 @@ scene1 = {
                     asset_texture_id = "projectile-texture",
                     width = 4,
                     height = 4,
-                    speed = 70,
-                    range = 300,
+                    speed = 200,
+                    range = 500,
                     angle = 180,
                     loop = true
                 }
@@ -219,8 +227,8 @@ scene1 = {
                     asset_texture_id = "projectile-texture",
                     width = 4,
                     height = 4,
-                    speed = 70,
-                    range = 300,
+                    speed = 200,
+                    range = 500,
                     angle = 90,
                     loop = true
                 }
@@ -250,8 +258,8 @@ scene1 = {
                     asset_texture_id = "projectile-texture",
                     width = 4,
                     height = 4,
-                    speed = 70,
-                    range = 300,
+                    speed = 200,
+                    range = 500,
                     angle = 0,
                     loop = true
                 }
@@ -281,8 +289,8 @@ scene1 = {
                     asset_texture_id = "projectile-texture",
                     width = 4,
                     height = 4,
-                    speed = 70,
-                    range = 300,
+                    speed = 200,
+                    range = 500,
                     angle = 0,
                     loop = true
                 }
@@ -312,8 +320,8 @@ scene1 = {
                     asset_texture_id = "projectile-texture",
                     width = 4,
                     height = 4,
-                    speed = 70,
-                    range = 300,
+                    speed = 200,
+                    range = 500,
                     angle = 0,
                     loop = true
                 }
@@ -343,8 +351,8 @@ scene1 = {
                     asset_texture_id = "projectile-texture",
                     width = 4,
                     height = 4,
-                    speed = 70,
-                    range = 300,
+                    speed = 200,
+                    range = 500,
                     angle = 180,
                     loop = true
                 }
@@ -374,8 +382,8 @@ scene1 = {
                     asset_texture_id = "projectile-texture",
                     width = 4,
                     height = 4,
-                    speed = 70,
-                    range = 300,
+                    speed = 200,
+                    range = 500,
                     angle = 90,
                     loop = true
                 }
@@ -405,8 +413,8 @@ scene1 = {
                     asset_texture_id = "projectile-texture",
                     width = 4,
                     height = 4,
-                    speed = 70,
-                    range = 300,
+                    speed = 200,
+                    range = 500,
                     angle = 0,
                     loop = true
                 }
@@ -434,10 +442,10 @@ scene1 = {
                 },
                 projectile_emitter = {
                     asset_texture_id = "projectile-texture",
-                    width = 8,
-                    height = 8,
-                    speed = 70,
-                    range = 300,
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 500,
                     angle = 270,
                     loop = true
                 }
@@ -465,10 +473,10 @@ scene1 = {
                 },
                 projectile_emitter = {
                     asset_texture_id = "projectile-texture",
-                    width = 8,
-                    height = 8,
-                    speed = 70,
-                    range = 300,
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 500,
                     angle = 90,
                     loop = true
                 }
@@ -496,10 +504,10 @@ scene1 = {
                 },
                 projectile_emitter = {
                     asset_texture_id = "projectile-texture",
-                    width = 8,
-                    height = 8,
-                    speed = 70,
-                    range = 300,
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 500,
                     angle = 180,
                     loop = true
                 }
@@ -527,10 +535,10 @@ scene1 = {
                 },
                 projectile_emitter = {
                     asset_texture_id = "projectile-texture",
-                    width = 8,
-                    height = 8,
-                    speed = 70,
-                    range = 300,
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 500,
                     angle = 90,
                     loop = true
                 }
@@ -558,10 +566,10 @@ scene1 = {
                 },
                 projectile_emitter = {
                     asset_texture_id = "projectile-texture",
-                    width = 8,
-                    height = 8,
-                    speed = 70,
-                    range = 300,
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 500,
                     angle = 270,
                     loop = true
                 }
@@ -589,10 +597,10 @@ scene1 = {
                 },
                 projectile_emitter = {
                     asset_texture_id = "projectile-texture",
-                    width = 8,
-                    height = 8,
-                    speed = 70,
-                    range = 300,
+                    width = 4,
+                    height = 4,
+                    speed = 200,
+                    range = 500,
                     angle = 270,
                     loop = true
                 }
@@ -623,7 +631,7 @@ scene1 = {
                     width = 4,
                     height = 4,
                     speed = 200,
-                    range = 1000,
+                    range = 500,
                     angle = math.random(360),
                     loop = true
                 }
@@ -654,7 +662,7 @@ scene1 = {
                     width = 4,
                     height = 4,
                     speed = 200,
-                    range = 1000,
+                    range = 500,
                     angle = math.random(360),
                     loop = true
                 }
@@ -685,7 +693,7 @@ scene1 = {
                     width = 4,
                     height = 4,
                     speed = 200,
-                    range = 1000,
+                    range = 500,
                     angle = math.random(360),
                     loop = true
                 }
@@ -716,7 +724,7 @@ scene1 = {
                     width = 4,
                     height = 4,
                     speed = 200,
-                    range = 1000,
+                    range = 500,
                     angle = math.random(360),
                     loop = true
                 }

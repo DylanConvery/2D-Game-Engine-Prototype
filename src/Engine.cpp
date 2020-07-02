@@ -326,31 +326,35 @@ void Engine::update() {
     _ticks_last_frame = SDL_GetTicks();
 
     manager.update(delta_time);
-
+    
     camera();
     collisions();
 }
 
 void Engine::camera() {
-    TransformComponent* player_position = player->getComponent<TransformComponent>();
+    if(player != nullptr){
+        TransformComponent* player_position = player->getComponent<TransformComponent>();
+        if(player_position != nullptr){
 
-    _camera.x = player_position->_position.x - ((WINDOW_WIDTH / 2) - (player_position->_width / 2));
-    _camera.y = player_position->_position.y - ((WINDOW_HEIGHT / 2) - (player_position->_height / 2));
+            _camera.x = player_position->_position.x - ((WINDOW_WIDTH / 2) - (player_position->_width / 2));
+            _camera.y = player_position->_position.y - ((WINDOW_HEIGHT / 2) - (player_position->_height / 2));
 
-    if (_camera.x < 0) {
-        _camera.x = 0;
-    }
+            if (_camera.x < 0) {
+                _camera.x = 0;
+            }
 
-    if (_camera.y < 0) {
-        _camera.y = 0;
-    }
+            if (_camera.y < 0) {
+                _camera.y = 0;
+            }
 
-    if (_camera.x > _camera.w) {
-        _camera.x = _camera.w;
-    }
+            if (_camera.x > _camera.w) {
+                _camera.x = _camera.w;
+            }
 
-    if (_camera.y > _camera.h) {
-        _camera.y = _camera.h;
+            if (_camera.y > _camera.h) {
+                _camera.y = _camera.h;
+            }
+        }
     }
 }
 
@@ -362,7 +366,7 @@ void Engine::collisions() {
             break;
         case PLAYER_ENEMY_COLLISION:
         case PLAYER_PROJECTILE_COLLSION:
-            gameOver();
+            nextLevel(1);
             break;
         default:
             break;
@@ -372,7 +376,9 @@ void Engine::collisions() {
 //TODO: reset camera, make sure we dont try to dereference null pointers, clean up, etc
 void Engine::nextLevel(int level) {
     std::cout << "Loading next level\n";
-    _loop = false;
+    manager.clear();
+    loadLevel(level);
+    // _loop = false;
 }
 
 void Engine::gameOver() {
@@ -391,6 +397,8 @@ void Engine::render() {
     // if we have entities to render
     if (!manager.empty()) {
         manager.render();
+    } else {
+        std::cout << "nothing to render\n";
     }
 
     // update screen
