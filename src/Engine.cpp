@@ -38,7 +38,7 @@ bool Engine::init(int width, int height) {
     }
 
     // create window
-    _window = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+    _window = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
     if (!_window) {
         std::cerr << "[ERROR] Window could not be created! SDL_Error: " << SDL_GetError() << "\n";
         return false;
@@ -47,7 +47,7 @@ bool Engine::init(int width, int height) {
     }
 
     // create vsynced renderer for window
-    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_PRESENTVSYNC);
     if (!_renderer) {
         std::cerr << "[ERROR] Renderer could not be created! SDL_Error: " << SDL_GetError() << "\n";
         return false;
@@ -314,7 +314,7 @@ void Engine::update() {
 
 #ifdef DEBUG
     LabelComponent* label = fps_label->getComponent<LabelComponent>();
-    label->setLabelText(std::to_string(delta_time), "charriot");
+    label->setLabelText(std::to_string(delta_time), "charriot-font");
 #endif  // DEBUG
 
     // clamp deltatime to maximum value. This is so if we are debugging,

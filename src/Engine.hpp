@@ -1,6 +1,14 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+//BUG:  if an error within AssetManager happens, it's because ColliderComponent 
+//      tries to add the bounding box texture, the one used in debugging but 
+//      the lua script never actuall adds it as a texture as I felt seeing as 
+//      there isn't a way from lua to check whether the engine is in debug 
+//      mode, why add a texture that is only used sometimes?
+
+#define DEBUG
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>

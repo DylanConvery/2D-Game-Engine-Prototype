@@ -23,6 +23,7 @@ void AssetManager::addFont(std::string fontID, std::string path, int font_size) 
 SDL_Texture* AssetManager::getTexture(std::string textureID) {
     auto element = _textures.find(textureID);
     if(element == _textures.end()){
+        std::cerr << "textureID: " << textureID << "\n";
         std::cerr << "[ERROR] Texure not found\n";
         return nullptr;
     } else {

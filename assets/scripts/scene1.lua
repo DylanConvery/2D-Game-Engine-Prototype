@@ -42,7 +42,9 @@ scene1 = {
         [31] = { type="texture", id = "bullet-friendly-texture", file = "./assets/images/bullet-friendly.png" },
         [32] = { type="texture", id = "radar-texture", file = "./assets/images/radar.png" },
         [33] = { type="sound", id = "blades-sound", file = "./assets/sounds/blades.wav" },
-        [33] = { type="font", id = "charriot-font", file = "./assets/fonts/charriot.ttf", size = 14 }
+        [33] = { type="font", id = "charriot-font", file = "./assets/fonts/charriot.ttf", size = 14 },
+        [34] = { type="texture", id = "bounding-box", file = "./assets/images/collision-texture.png" }
+
     },
 	map = {
         texture_id = map_texture,
